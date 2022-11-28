@@ -1,10 +1,15 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 module.exports = {
   entry: "./src/index.ts",
   module: {
     rules: [
+      {
+        test: /\.wasm$/,
+        type: "javascript/auto",
+      },
       {
         test: /\.tsx?$/,
         use: "ts-loader",
@@ -16,7 +21,16 @@ module.exports = {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
   },
+
   resolve: {
+    fallback: {
+      path: require.resolve("path-browserify"),
+      util: require.resolve("util/"),
+      buffer: require.resolve("buffer/"),
+      stream: require.resolve("stream-browserify"),
+      fs: require.resolve("browserify-fs"),
+      crypto: require.resolve("crypto-browserify"),
+    },
     extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
@@ -27,6 +41,9 @@ module.exports = {
       template: "./src/index.html",
       filename: "index.html",
       inject: "body",
+    }),
+    new CopyPlugin({
+      patterns: [{ from: "./src/assets/fires.sqlite.gz", to: "." }],
     }),
   ],
 };
