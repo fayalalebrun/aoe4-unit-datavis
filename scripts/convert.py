@@ -30,7 +30,7 @@ df["DISCOVERY_MONTH"] = df['DISCOVERY_DATE'].dt.month
 df["DISCOVERY_YEAR"] = df['DISCOVERY_DATE'].dt.year
 
 # These are the columns we want to use in our final dataset
-transfer_cols = ["STATE", "FIRE_SIZE", "DISCOVERY_MONTH", "DISCOVERY_YEAR", "NWCG_GENERAL_CAUSE"]
+transfer_cols = ["STATE", "FIRE_SIZE_CLASS", "DISCOVERY_MONTH", "DISCOVERY_YEAR", "NWCG_GENERAL_CAUSE"]
 df = df.loc[:, transfer_cols]
 
 print('Rows before: ' + str(df.shape[0]))
