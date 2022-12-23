@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import * as initSqlJs from "sql.js";
 import * as pako from "pako";
 import { Database } from "sql.js";
+import { count } from "d3";
 
 d3.select("body").transition().duration(2000).style("background-color", "cyan");
 
@@ -28,6 +29,7 @@ const SQL = initSqlJs({
     document.body.appendChild(element);
 
     createBubble(db);
+    createHeatmap(db);
   };
   xhr.send();
 });
@@ -115,4 +117,124 @@ function createBubble(db: Database) {
     .style("opacity", "0.7")
     .attr("stroke", "white")
     .style("stroke-width", "2px");
+}
+
+function createHeatmap(db: Database) {
+
+  // set the dimensions and margins of the graph
+  var margin = {top: 80, right: 25, bottom: 30, left: 40},
+    width = 600 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom
+
+  const contents = db.exec(
+    "SELECT FIRE_SIZE_CLASS, CAST(DISCOVERY_YEAR AS REAL) AS YEAR_MONTH, SUM(COUNT) AS COUNT " +
+      "FROM Fires " +
+      "GROUP BY FIRE_SIZE_CLASS, YEAR_MONTH"
+  );
+
+  const columns = contents[0].columns;
+  const rows = contents[0].values;
+
+  const data_heatmap = rows.map((row) => {
+    let obj = {};
+    type ObjType = {
+      COUNT: number;
+      YEAR_MONTH: number;
+      // NWCG_GENERAL_CAUSE: string;
+      FIRE_SIZE_CLASS: string;
+    };
+    columns.forEach((column, index) => {
+      (obj as any)[column] = row[index];
+    });
+    return obj as ObjType;
+  });
+
+  const fire_size_classes = db
+    .exec("SELECT DISTINCT FIRE_SIZE_CLASS FROM Fires")[0]
+    .values.flat()
+    .sort();
+
+  const causes = db
+    .exec("SELECT DISTINCT NWCG_GENERAL_CAUSE FROM Fires")[0]
+    .values.flat();
+
+  const max_count = db.exec("SELECT MAX(COUNT) FROM Fires")[0].values.flat()[0];
+  
+  const counts = db
+    .exec(
+      "SELECT 1.00*COUNT/max_COUNT FROM (SELECT MAX(COUNT) OVER () AS max_COUNT, COUNT FROM Fires)")[0]
+    .values.flat();
+
+  console.log("COUNTS NORMALIZED: ")
+  console.log(counts)
+
+  const years = db.exec("SELECT DISCOVERY_YEAR FROM Fires")[0]
+    .values.flat()
+    .sort();
+
+
+  // const min_count = db.exec("SELECT CAST(MIN(COUNT) AS REAL) FROM Fires"
+  //   + "GROUP BY FIRE_SIZE_CLASS, YEAR_MONTH")[0].values.flat().at(0) as number;
+
+  // const max_count = db.exec("SELECT CAST(MAX(COUNT) AS REAL) FROM Fires"
+  //   + "GROUP BY FIRE_SIZE_CLASS, YEAR_MONTH")[0].values.flat().at(0) as number;
+
+  // append the svg object to the body of the page
+  let svg = d3.select("#calendar-heatmap")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+  // Build X scale and axis:
+  var x = d3.scaleBand().range([ 0, width ]).domain(years as string[]);
+
+  svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x))
+  .select(".domain").remove();
+
+  // Build Y scale and axis:
+  var y = d3.scaleBand()
+  .range([height, 0])
+  .domain(fire_size_classes as string[]);
+
+  svg.append("g").call(d3.axisLeft(y)).select(".domain").remove();
+
+  // Build color scale
+  // var myColor = d3.scaleLinear()
+  // .range([0,2000])
+  // .domain([0, max_count as Number])
+
+  var myColor = d3.scaleSequential()
+    .interpolator(d3.interpolateBlues)
+    .domain([1, max_count as Number]);
+
+  // console.log("MAX COUNT: " + max_count);
+  // var myColor = d3.scaleLog()
+  // .range([0, 1800])
+  // .domain([10, max_count as Number])
+
+  //Read the data
+  svg.selectAll()
+      .data(data_heatmap, function(d) {return d.YEAR_MONTH+':'+d.FIRE_SIZE_CLASS;})
+      .enter()
+      .append("rect")
+      .attr("x", function(d) { return x(d.YEAR_MONTH as unknown as string) })
+      .attr("y", function(d) { return y(d.FIRE_SIZE_CLASS) })
+      .attr("width", x.bandwidth() )
+      .attr("height", y.bandwidth() )
+      // .style("fill", (counts as Number[]).map(count => myColor(count as Number)))
+      .style("fill", function (d) { return myColor(d.COUNT) } )
+      // .style("fill", function (d) { return colorPerVariable(min_count, max_count, d.COUNT) } )
+}
+
+//Color scale function
+function colorPerVariable(minimum:number, maximum: number, value: number) {
+  var myColor = d3.scaleSequential()
+      .interpolator(d3.interpolateViridis)
+      .domain([minimum, maximum]);
+  return myColor(value);
 }
