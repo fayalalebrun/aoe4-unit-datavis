@@ -43,7 +43,7 @@ module.exports = {
       inject: "body",
     }),
     new CopyPlugin({
-      patterns: [{ from: "./src/assets/fires.sqlite.gz", to: "." }],
+      patterns: [{ from: "./src/assets/all.json", to: "." }],
     }),
   ],
 };

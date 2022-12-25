@@ -1,1 +1,2 @@
 *.sqlite.gz filter=lfs diff=lfs merge=lfs -text
+all.json filter=lfs diff=lfs merge=lfs -text
