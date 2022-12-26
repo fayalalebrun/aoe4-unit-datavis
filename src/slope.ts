@@ -30,10 +30,11 @@ export async function createSlope(data: Unit[], unit: Unit) {
       title: "Armor",
     },
   ];
-  await createSlopeSub(group, subgraphs);
+  await createSlopeSub(unit, group, subgraphs);
 }
 
 async function createSlopeSub(
+  unit: Unit,
   group: Unit[],
   subgraphs: { yFn: (unit: Unit) => number; color: string; title: string }[]
 ) {
@@ -74,8 +75,8 @@ async function createSlopeSub(
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(xScale));
 
-  subgraphs.map((unit, index) => {
-    const yDomain = d3.extent(group, unit.yFn);
+  subgraphs.map((u, index) => {
+    const yDomain = d3.extent(group, u.yFn);
     const base = (heightPerGraph + margin.top) * index;
     const yRange = [heightPerGraph + base, base];
     const yScale = d3.scaleLinear().domain(yDomain).range(yRange);
@@ -88,22 +89,30 @@ async function createSlopeSub(
       .append("path")
       .datum(group)
       .attr("fill", "none")
-      .attr("stroke", unit.color)
+      .attr("stroke", u.color)
       .attr("stroke-width", 1.5)
       .attr(
         "d",
         d3
           .line()
           .x((d: any) => xScale(age_num_to_string(d.age)))
-          .y((d: any) => yScale(unit.yFn(d))) as any
+          .y((d: any) => yScale(u.yFn(d))) as any
       );
+
+    svg
+      .append("circle")
+      .attr("cx", xScale(age_num_to_string(unit.age)))
+      .attr("cy", yScale(u.yFn(unit)))
+      .attr("r", 3)
+      .attr("fill", u.color);
+
     svg
       .append("text")
       .attr("transform", `translate(0, ${base})`)
       .attr("x", padding)
       .attr("y", padding)
       .attr("dy", ".71em")
-      .text(unit.title);
+      .text(u.title);
   });
 
   return svg.node();

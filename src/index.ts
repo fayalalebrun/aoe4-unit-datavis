@@ -59,7 +59,7 @@ export interface Unit {
 async function main() {
   const data: Unit[] = ((await d3.json("all.json")) as any).data;
 
-  await createSlope(data, data[22]);
+  await createSlope(data, data[21]);
 }
 
 main();
