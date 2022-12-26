@@ -1,7 +1,8 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
+import { createSlope } from "./slope";
 
-interface Unit {
+export interface Unit {
   id: string;
   baseId: string;
   name: string;
@@ -42,7 +43,7 @@ interface Unit {
       teardown: number;
       cooldown: number;
     };
-  };
+  }[];
   armor: {
     type: string;
     value: number;
@@ -57,7 +58,8 @@ interface Unit {
 
 async function main() {
   const data: Unit[] = ((await d3.json("all.json")) as any).data;
-  console.log(data);
+
+  await createSlope(data, data[22]);
 }
 
 main();
