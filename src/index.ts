@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { createSlope } from "./slope";
+import { createScatter } from "./scatter";
 
 export interface Unit {
   id: string;
@@ -60,6 +61,7 @@ async function main() {
   const data: Unit[] = ((await d3.json("all.json")) as any).data;
 
   await createSlope(data, data[21]);
+  await createScatter(data);
 }
 
 main();

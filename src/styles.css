@@ -1,0 +1,38 @@
+.dropdown {
+    width: 300px;
+}
+
+#dropdown_container_x {
+    margin-left: 285px;
+}
+
+#dropdown_container_y {
+    margin-left: 34px;
+}
+
+.selection {
+    width: 50%;
+}
+
+#scatter circle {
+    r: 3px;
+    fill: #1c95ff26;
+}
+
+#scatter text {
+    font-size: 13px;
+}
+
+#scatterplot_title {
+    width: 400px;
+    display: block;
+    text-align: center;
+    margin-left: 34px;
+    margin-bottom: 10px;
+}
+
+.gridline {
+    stroke: black;
+    shape-rendering: crispEdges;
+    stroke-opacity: .2;
+}
