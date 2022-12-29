@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { Unit } from ".";
 
-export async function createSlope(data: Unit[], unit: Unit) {
+export function createSlope(data: Unit[], unit: Unit) {
   const groups = d3.group(
     data,
     (d) => d.civs[0],
@@ -10,7 +10,6 @@ export async function createSlope(data: Unit[], unit: Unit) {
 
   const group = groups.get(unit.civs[0]).get(unit.baseId);
 
-  console.log(group);
   const subgraphs = [
     {
       yFn: (d: Unit) => d.hitpoints,
@@ -30,10 +29,10 @@ export async function createSlope(data: Unit[], unit: Unit) {
       title: "Armor",
     },
   ];
-  await createSlopeSub(unit, group, subgraphs);
+  createSlopeSub(unit, group, subgraphs);
 }
 
-async function createSlopeSub(
+function createSlopeSub(
   unit: Unit,
   group: Unit[],
   subgraphs: { yFn: (unit: Unit) => number; color: string; title: string }[]
