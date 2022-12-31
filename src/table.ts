@@ -13,15 +13,11 @@ export function createFiltering(
     civ: "",
   };
 
-  function getField(object: any, path: string[]) {
-    return path.reduce((acc, item) => acc[item], object);
-  }
-
   function createRange(
     name: string,
-    path: string[]
-  ): { name: string; path: string[]; range: [number, number] } {
-    const values = units.map((u) => getField(u, path));
+    property: (u: Unit) => number
+  ): { name: string; property: (u: Unit) => number; range: [number, number] } {
+    const values = units.map(property);
     const min = values.reduce(
       (acc, item) => (item < acc ? item : acc),
       Number.MAX_VALUE
@@ -31,12 +27,25 @@ export function createFiltering(
       Number.MIN_VALUE
     );
 
-    return { name, path, range: [min, max] };
+    return { name, property, range: [min, max] };
   }
 
   let ranges = [
-    createRange("Hitpoints", ["hitpoints"]),
-    createRange("Line of Sight", ["sight", "line"]),
+    createRange("Hitpoints", (u) => u.hitpoints),
+    createRange("Line of Sight", (u) => u.sight.line),
+    createRange("Speed", (u) => u.movement.speed),
+    createRange("Weapon Damage", (u) => u.weapons[0]?.damage ?? 0),
+    createRange(
+      "Melee armor",
+      (u) => u.armor.find((a) => a.type == "melee")?.value ?? 0
+    ),
+    createRange(
+      "Ranged armor",
+      (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0
+    ),
+    createRange("Food", (u) => u.costs.food),
+    createRange("Gold", (u) => u.costs.gold),
+    createRange("Wood", (u) => u.costs.wood),
   ];
 
   let fuse = new Fuse(units, { keys: ["name"] });
@@ -60,8 +69,7 @@ export function createFiltering(
 
     const afterRanges = ranges.reduce((acc, r) => {
       return acc.filter(
-        (u) =>
-          getField(u, r.path) >= r.range[0] && getField(u, r.path) <= r.range[1]
+        (u) => r.property(u) >= r.range[0] && r.property(u) <= r.range[1]
       );
     }, afterCiv);
     return afterRanges;
@@ -96,11 +104,11 @@ export function createFiltering(
     .selectAll("span")
     .data(ranges)
     .join("span")
-    .attr("id", (d) => "span-" + d.path.join("-"))
+    .attr("id", (d) => "span-" + d.name.toLowerCase().replace(/\s+/g, "-"))
     .text((d) => d.name);
 
   ranges.forEach((r) => {
-    d3.select("#span-" + r.path.join("-"))
+    d3.select("#span-" + r.name.toLowerCase().replace(/\s+/g, "-"))
       .selectAll("input")
       .data(["min", "max"])
       .join("input")
@@ -137,7 +145,6 @@ export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
     ],
     ["Food", (u: Unit) => u.costs.food],
     ["Gold", (u: Unit) => u.costs.gold],
-    ["Stone", (u: Unit) => u.costs.stone],
     ["Wood", (u: Unit) => u.costs.wood],
   ];
 
