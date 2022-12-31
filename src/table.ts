@@ -119,6 +119,34 @@ export function createFiltering(
 }
 
 export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
+  const columns: [string, (u: Unit) => any][] = [
+    ["Name", (u: Unit) => u.name],
+    ["Class", (u: Unit) => u.displayClasses[0]],
+    ["Hitpoints", (u: Unit) => u.hitpoints],
+    ["Line of Sight", (u: Unit) => u.sight.line],
+    ["Speed", (u: Unit) => u.movement.speed],
+    ["Weapon type", (u: Unit) => u.weapons[0]?.type],
+    ["Weapon damage", (u: Unit) => u.weapons[0]?.damage],
+    [
+      "Melee armor",
+      (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
+    ],
+    [
+      "Ranged armor",
+      (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
+    ],
+    ["Food", (u: Unit) => u.costs.food],
+    ["Gold", (u: Unit) => u.costs.gold],
+    ["Stone", (u: Unit) => u.costs.stone],
+    ["Wood", (u: Unit) => u.costs.wood],
+  ];
+
+  d3.select("#headers")
+    .selectAll("th")
+    .data(columns.map((c) => c[0]))
+    .join("th")
+    .text((d) => d);
+
   const rows = d3
     .select("#table-body")
     .selectAll("tr")
@@ -126,20 +154,9 @@ export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
     .join("tr")
     .on("click", (_, d) => onUnitSelect(d));
 
-  const row_fns = [
-    (u: Unit) => u.name,
-    (u: Unit) => u.displayClasses[0],
-    (u: Unit) => u.hitpoints,
-    (u: Unit) => u.costs.food + u.costs.gold + u.costs.stone + u.costs.wood,
-    (u: Unit) => u.sight.line,
-    (u: Unit) => u.movement.speed,
-    (u: Unit) => u.weapons[0]?.type,
-    (u: Unit) => u.weapons[0]?.damage,
-  ];
-
   rows
     .selectAll("td")
-    .data((unit: Unit) => row_fns.map((fn) => fn(unit)))
+    .data((unit: Unit) => columns.map((c) => c[1]).map((fn) => fn(unit)))
     .join("td")
     .text((d) => d);
 }
