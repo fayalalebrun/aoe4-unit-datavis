@@ -24,9 +24,14 @@ export function createSlope(data: Unit[], unit: Unit) {
       title: "Weapon damage",
     },
     {
-      yFn: (d: Unit) => d.armor[0].value,
+      yFn: (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
       color: "blue",
-      title: "Armor",
+      title: "Melee armor",
+    },
+    {
+      yFn: (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
+      color: "purple",
+      title: "Ranged armor",
     },
   ];
   createSlopeSub(unit, group, subgraphs);
