@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { createSlope } from "./slope";
-import { createTable } from "./table";
+import { createFiltering, createTable } from "./table";
 
 export interface Unit {
   id: string;
@@ -59,10 +59,15 @@ export interface Unit {
 }
 
 async function main() {
-  const data: Unit[] = ((await d3.json("all.json")) as any).data;
+  let data: Unit[] = ((await d3.json("all.json")) as any).data;
 
   createSlope(data, data[21]);
-  createTable(data, (unit) => createSlope(data, unit));
+
+  const tableFn = (units: Unit[]) =>
+    createTable(units, (unit) => createSlope(data, unit));
+  tableFn(data);
+
+  createFiltering(data, tableFn);
 }
 
 main();
