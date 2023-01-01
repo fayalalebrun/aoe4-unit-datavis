@@ -28,9 +28,9 @@ export async function createScatter(data: Unit[]) {
 
     // Clickable options in the dropdown list
     const dropdown_list = [
-        "weapon damage", "weapon max range", "movement speed", 
-        "gold costs", "attack duration", "armor",
-        "modifier max value"
+        "Weapon damage", "Weapon max range", "Movement speed", 
+        "Gold costs", "Attack bonus max value", "Attack duration",
+        "Meele armor", "Ranged armor"
     ];
     
     createDropDown(dropdown_list, "x_selection", "x");
@@ -60,11 +60,11 @@ export async function createScatter(data: Unit[]) {
 function returnData(unit: Unit, selection_name: string, debug = false): number {
 
     switch(selection_name) {
-        case "weapon damage" : return unit.weapons.map(wp => wp.damage)[0];
-        case "weapon max range" : return unit.weapons.map(wp => wp.range.max)[0];
-        case "movement speed" : return unit.movement.speed;
-        case "gold costs" : return unit.costs.gold;
-        case "modifier max value" : {
+        case "Weapon damage" : return unit.weapons.map(wp => wp.damage)[0];
+        case "Weapon max range" : return unit.weapons.map(wp => wp.range.max)[0];
+        case "Movement speed" : return unit.movement.speed;
+        case "Gold costs" : return unit.costs.gold;
+        case "Attack bonus max value" : {
             if (debug) console.log("WEAPONS: " + JSON.stringify(unit.weapons.map(wp => wp.modifiers)));
 
             return unit.weapons.map(wp => {
@@ -72,8 +72,9 @@ function returnData(unit: Unit, selection_name: string, debug = false): number {
                 return modifierValues[0];
             })[0];
         };
-        case "attack duration" : return unit.weapons.map(wp => wp.durations.attack)[0];
-        case "armor" : return unit.armor.map(arm => arm.value)[0]; // check if there are more types of armor
+        case "Attack duration" : return unit.weapons.map(wp => wp.durations.attack)[0];
+        case "Meele armor" : return unit.armor.find((a) => a.type == "melee")?.value ?? 0;
+        case "Ranged armor" : return unit.armor.find((a) => a.type == "ranged")?.value ?? 0;
     }
 }
 
@@ -160,8 +161,8 @@ function updateScatterPlot(data: Unit[], width: any, height: any, margin: any) {
 
     const mousemove = function(event:MouseEvent, d: Unit) {
         tooltip
-        .html(ySelectedOptionText + " : " + returnData(d, xSelectedOptionText) + "<br>"
-                + xSelectedOptionText + " : " + returnData(d, ySelectedOptionText))
+        .html(xSelectedOptionText + " : " + returnData(d, xSelectedOptionText) + "<br>"
+                + ySelectedOptionText + " : " + returnData(d, ySelectedOptionText))
         .style("left", event.x+10 + "px")
         .style("top", event.y+10 + "px")
     }
