@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { createSlope } from "./slope";
+import { createFiltering, createTable } from "./table";
 
 export interface Unit {
   id: string;
@@ -9,6 +10,7 @@ export interface Unit {
   age: number;
   civs: string[];
   classes: string[];
+  displayClasses: string[];
   costs: {
     food: number;
     wood: number;
@@ -57,9 +59,15 @@ export interface Unit {
 }
 
 async function main() {
-  const data: Unit[] = ((await d3.json("all.json")) as any).data;
+  let data: Unit[] = ((await d3.json("all.json")) as any).data;
 
-  await createSlope(data, data[21]);
+  createSlope(data, data[21]);
+
+  const tableFn = (units: Unit[]) =>
+    createTable(units, (unit) => createSlope(data, unit));
+  tableFn(data);
+
+  createFiltering(data, tableFn);
 }
 
 main();
