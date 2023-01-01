@@ -3,16 +3,20 @@ import { sort } from "d3";
 import Fuse from "fuse.js";
 import { Unit } from ".";
 
+/// Creates the controls for filtering the units in the table and other graphs
 export function createFiltering(
   units: Unit[],
   onUnitsNarrow: (units: Unit[]) => void
 ) {
+  // Categorical filters
   let filters = {
     name: "",
     age: NaN,
     civ: "",
   };
 
+  // Creates a range for a continuous quantity. Will automatically calculate minimum and maximum
+  // for that quantity
   function createRange(
     name: string,
     property: (u: Unit) => number
@@ -30,6 +34,8 @@ export function createFiltering(
     return { name, property, range: [min, max] };
   }
 
+  // Each continuous filter is specified in this array, with a title and a function for obtaining
+  // the quantity from the unit.
   let ranges = [
     createRange("Hitpoints", (u) => u.hitpoints),
     createRange("Line of Sight", (u) => u.sight.line),
@@ -48,8 +54,11 @@ export function createFiltering(
     createRange("Wood", (u) => u.costs.wood),
   ];
 
+  // This is used for fuzzy search
   let fuse = new Fuse(units, { keys: ["name"] });
 
+  // Run the selected filters on the original list of units and return a new list.
+  // Captures the list of units from above.
   function doFiltering(): Unit[] {
     const afterName =
       filters.name === ""
@@ -75,11 +84,13 @@ export function createFiltering(
     return afterRanges;
   }
 
+  // Search filter
   d3.select("#search-input").on("input", (event) => {
     filters.name = event.target.value;
     onUnitsNarrow(doFiltering());
   });
 
+  // Age filter
   d3.select("#select-age")
     .on("change", (event) => {
       filters.age = event.target.value;
@@ -90,6 +101,7 @@ export function createFiltering(
     .join("option")
     .text((d) => d);
 
+  // Civilization filter
   d3.select("#select-civ")
     .on("change", (event) => {
       filters.civ = event.target.value;
@@ -100,6 +112,7 @@ export function createFiltering(
     .join("option")
     .text((d) => d);
 
+  // For each continuous filter, create a span which will then contain the name and the inputs.
   d3.select("#ranges")
     .selectAll("span")
     .data(ranges)
@@ -107,6 +120,7 @@ export function createFiltering(
     .attr("id", (d) => "span-" + d.name.toLowerCase().replace(/\s+/g, "-"))
     .text((d) => d.name);
 
+  // Add the inputs to each previously created span.
   ranges.forEach((r) => {
     d3.select("#span-" + r.name.toLowerCase().replace(/\s+/g, "-"))
       .selectAll("input")
@@ -126,7 +140,10 @@ export function createFiltering(
   });
 }
 
+// Creates/updates a table based on a given list of units. Takes a callback which
+/// is called on a click event to a row
 export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
+  // Describe columns in the code itself
   const columns: [string, (u: Unit) => any][] = [
     ["Name", (u: Unit) => u.name],
     ["Class", (u: Unit) => u.displayClasses[0]],
@@ -148,12 +165,14 @@ export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
     ["Wood", (u: Unit) => u.costs.wood],
   ];
 
+  // Create headers.
   d3.select("#headers")
     .selectAll("th")
     .data(columns.map((c) => c[0]))
     .join("th")
     .text((d) => d);
 
+  // Add a row for each unit.
   const rows = d3
     .select("#table-body")
     .selectAll("tr")
@@ -161,6 +180,7 @@ export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
     .join("tr")
     .on("click", (_, d) => onUnitSelect(d));
 
+  // Add all attributes to each row.
   rows
     .selectAll("td")
     .data((unit: Unit) => columns.map((c) => c[1]).map((fn) => fn(unit)))
