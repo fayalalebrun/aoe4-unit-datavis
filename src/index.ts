@@ -6,6 +6,8 @@ import { createHeatmap } from "./heatmap";
 import { createHeatmapDropdown } from "./heatmap";
 import { createFiltering, createTable } from "./table";
 
+import "./index.scss";
+
 export interface Unit {
   id: string;
   baseId: string;
