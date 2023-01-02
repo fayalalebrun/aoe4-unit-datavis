@@ -7,24 +7,6 @@ import "./styles.css";
  * Uses a dropdown list per axis to pick attributes for comparison.
  */
 export async function createScatter(data: Unit[]) {
-  // Set the dimensions and margins of the graph
-  var margin = { top: 10, right: 30, bottom: 20, left: 60 },
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-  d3.select("#scatter").selectAll("svg").remove();
-
-  // Append the svg object to the body of the page
-  const svg = d3
-    .select("#scatter")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  d3.select("#dropdown_container_x").selectAll("select").remove();
-  d3.select("#dropdown_container_y").selectAll("select").remove();
-
   // Clickable options in the dropdown list
   const dropdown_list = [
     "Weapon damage",
@@ -41,16 +23,14 @@ export async function createScatter(data: Unit[]) {
   createDropDown(dropdown_list.reverse(), "y_selection", "y");
 
   d3.select("#x_selection").on("change", function () {
-    updateScatterPlot(data, width, height, margin);
+    updateScatterPlot(data);
   });
 
   d3.select("#y_selection").on("change", function () {
-    updateScatterPlot(data, width, height, margin);
+    updateScatterPlot(data);
   });
 
-  updateScatterPlot(data, width, height, margin);
-
-  return svg.node();
+  updateScatterPlot(data);
 }
 
 /**
@@ -114,7 +94,12 @@ function createDropDown(data: string[], name: string, axisName: string) {
 /**
  * Update the plot to show the data corresponding to the dropdown selection.
  */
-function updateScatterPlot(data: Unit[], width: any, height: any, margin: any) {
+function updateScatterPlot(data: Unit[]) {
+      // Set the dimensions and margins of the graph
+  var margin = { top: 10, right: 30, bottom: 20, left: 60 },
+  width = 460 - margin.left - margin.right,
+  height = 400 - margin.top - margin.bottom;
+
   d3.select("#scatter").selectAll("svg").remove();
 
   // Retrieve the selected axis option from the dropdown menus
@@ -165,7 +150,7 @@ function updateScatterPlot(data: Unit[], width: any, height: any, margin: any) {
     .select("#scatter")
     .append("div")
     .style("opacity", 0)
-    .attr("class", "tooltip")
+    .attr("class", "scatter_tooltip")
     .style("background-color", "white")
     .style("border", "solid")
     .style("border-width", "1px")
@@ -189,8 +174,8 @@ function updateScatterPlot(data: Unit[], width: any, height: any, margin: any) {
           " : " +
           returnData(d, ySelectedOptionText)
       )
-      .style("left", event.x + 10 + "px")
-      .style("top", event.y + 10 + "px");
+      .style("left", event.pageX + 10 + "px")
+      .style("top", event.pageY + 10 + "px");
   };
 
   // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again

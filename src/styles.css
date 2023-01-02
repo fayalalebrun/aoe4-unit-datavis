@@ -37,7 +37,7 @@
     stroke-opacity: .2;
 }
 
-.tooltip {
+.scatter_tooltip {
     position: absolute;
     z-index: 1070;
     display: block;
@@ -60,75 +60,3 @@
     word-wrap: break-word;
     opacity: 0;
 }
-
-
-/* select option {
-    list-style: none;
-    margin: 0 auto;
-    border-left: 2px solid #3ca0e7;
-    display: inline-block;
-    padding: 0 30px;
-    position: relative;
-    text-decoration: none;
-    text-align: center;
-    font-family: arvo;
-}
-
-option {
-    color: black;
-}
-
-option:hover {
-    color: #3ca0e7;
-    cursor: pointer;
-}
-
-select option select {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    padding-left: 0;
-    left: 0;
-    display: none;
-    background: white;
-}
-
-select option:hover>select,
-select option select:hover {
-    visibility: visible;
-    opacity: 1;
-    display: block;
-    min-width: 250px;
-    text-align: left;
-    padding-top: 20px;
-    box-shadow: 0px 3px 5px -1px #ccc;
-}
-
-select option select option {
-    clear: both;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 20px;
-    border-style: none;
-}
-
-select option select option:hover {
-    padding-left: 10px;
-    border-left: 2px solid #3ca0e7;
-    transition: all 0.3s ease;
-}
-
-
-a {
-
-    text-decoration: none;
-
-    &:hover {
-        color: #3CA0E7;
-    }
-
-}
-
-select option select option {
-    transition: all 0.5s ease;
-} */
