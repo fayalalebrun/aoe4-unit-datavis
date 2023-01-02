@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { createSlope } from "./slope";
+import { createScatter } from "./scatter";
 import { createHeatmap } from "./heatmap";
 import { createHeatmapDropdown } from "./heatmap";
 import { createFiltering, createTable } from "./table";
@@ -64,6 +65,7 @@ export interface Unit {
 async function main() {
   let data: Unit[] = ((await d3.json("all.json")) as any).data;
 
+  await createScatter(data);
   createSlope(data, data[21]);
 
   const tableFn = (units: Unit[]) =>
