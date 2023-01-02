@@ -5,11 +5,42 @@
     <title>InfoVis</title>
   </head>
   <body>
-      <script src="main.js"></script>
+	  <h1>Attack Bonus of Civilization Units</h1>
+	  <p>The heatmap below shows the attack bonuses of a selected allied civilization against the units of a rival civilization.</p>
+	  <div id="alliedCivSelectButton"></div>
+	  <div id="unitHeatmap" style="display:inline-block;"></div>
+	  <div id="rivalCivSelectButton" style="display:inline-block;"></div>
       <div id="slope"></div>
       <span id="scatterplot_title">Scatterplot Title</span>
       <div class="dropdown" id="dropdown_container_y"></div>
       <div id="scatter"></div>
       <div class="dropdown" id="dropdown_container_x"></div>
+      <div id="filters">
+	  <span>
+	      Name
+	      <input type="search" id="search-input">
+	  </span>
+	  <span>
+	      Age
+	      <select name="Age" id="select-age">
+	      </select>
+	  </span>
+	  <span>
+	      Civilization
+	      <select name="Civilization" id="select-civ"> </select>
+	  </span>
+
+	  <span id="ranges">
+	  </span>
+      </div>
+      <table id="table">
+	  <thead>
+	      <tr id="headers">
+
+	      </tr>
+	  </thead>
+	  <tbody id="table-body"> </tbody>
+      </table>
   </body>
 </html>
+
