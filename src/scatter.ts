@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { Unit } from ".";
-import "./styles.css";
+import "./styles.scss";
 
 /**
  * Creates a scatter plot based on different unit specifications selected by the user.
@@ -95,10 +95,10 @@ function createDropDown(data: string[], name: string, axisName: string) {
  * Update the plot to show the data corresponding to the dropdown selection.
  */
 function updateScatterPlot(data: Unit[]) {
-      // Set the dimensions and margins of the graph
+  // Set the dimensions and margins of the graph
   var margin = { top: 10, right: 30, bottom: 20, left: 60 },
-  width = 460 - margin.left - margin.right,
-  height = 400 - margin.top - margin.bottom;
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
   d3.select("#scatter").selectAll("svg").remove();
 

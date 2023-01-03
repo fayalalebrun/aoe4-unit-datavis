@@ -1,7 +1,9 @@
 import * as d3 from "d3";
-import { sort } from "d3";
+import { sort, text } from "d3";
 import Fuse from "fuse.js";
 import { Unit } from ".";
+import noUiSlider from "nouislider";
+import "nouislider/dist/nouislider.css";
 
 /// Creates the controls for filtering the units in the table and other graphs
 export function createFiltering(
@@ -20,7 +22,12 @@ export function createFiltering(
   function createRange(
     name: string,
     property: (u: Unit) => number
-  ): { name: string; property: (u: Unit) => number; range: [number, number] } {
+  ): {
+    name: string;
+    property: (u: Unit) => number;
+    range: [number, number];
+    curr: [number, number];
+  } {
     const values = units.map(property);
     const min = values.reduce(
       (acc, item) => (item < acc ? item : acc),
@@ -31,7 +38,7 @@ export function createFiltering(
       Number.MIN_VALUE
     );
 
-    return { name, property, range: [min, max] };
+    return { name, property, range: [min, max], curr: [min, max] };
   }
 
   // Each continuous filter is specified in this array, with a title and a function for obtaining
@@ -78,7 +85,7 @@ export function createFiltering(
 
     const afterRanges = ranges.reduce((acc, r) => {
       return acc.filter(
-        (u) => r.property(u) >= r.range[0] && r.property(u) <= r.range[1]
+        (u) => r.property(u) >= r.curr[0] && r.property(u) <= r.curr[1]
       );
     }, afterCiv);
     return afterRanges;
@@ -112,31 +119,62 @@ export function createFiltering(
     .join("option")
     .text((d) => d);
 
-  // For each continuous filter, create a span which will then contain the name and the inputs.
-  d3.select("#ranges")
-    .selectAll("span")
-    .data(ranges)
-    .join("span")
-    .attr("id", (d) => "span-" + d.name.toLowerCase().replace(/\s+/g, "-"))
-    .text((d) => d.name);
-
   // Add the inputs to each previously created span.
   ranges.forEach((r) => {
-    d3.select("#span-" + r.name.toLowerCase().replace(/\s+/g, "-"))
-      .selectAll("input")
-      .data(["min", "max"])
-      .join("input")
-      .attr("type", "number")
-      .attr("value", (d) => (d === "min" ? r.range[0] : r.range[1]))
-      .on("input", (ev, d) => {
-        const num = ev.target.value === "" ? 0 : parseFloat(ev.target.value);
-        if (d === "min") {
-          r.range[0] = num;
-        } else {
-          r.range[1] = num;
-        }
-        onUnitsNarrow(doFiltering());
-      });
+    let ranges = document.getElementById("ranges");
+
+    let div = document.createElement("div");
+    ranges.appendChild(div);
+    div.className = "field is-grouped";
+
+    let label = document.createElement("label");
+    label.className = "label";
+    label.textContent = r.name;
+    div.appendChild(label);
+
+    let minControl = document.createElement("p");
+    minControl.className = "control";
+    div.appendChild(minControl);
+
+    let minLabel = document.createElement("a");
+    minLabel.className = "button is-static is-small mx-2";
+    minLabel.textContent = "0.0";
+    minControl.appendChild(minLabel);
+
+    let rangeControl = document.createElement("div");
+    div.appendChild(rangeControl);
+    rangeControl.className = "control is-expanded mx-2";
+
+    let range = document.createElement("div");
+    range.id = "#range-" + r.name.toLowerCase().replace(/\s+/g, "-");
+    rangeControl.appendChild(range);
+
+    let maxControl = document.createElement("p");
+    maxControl.className = "control";
+    div.appendChild(maxControl);
+
+    let maxLabel = document.createElement("a");
+    maxLabel.className = "button is-static is-small mx-2";
+    maxLabel.textContent = "0.0";
+    maxControl.appendChild(maxLabel);
+
+    function updateLabels() {
+      minLabel.textContent = r.curr[0].toString();
+      maxLabel.textContent = r.curr[1].toString();
+    }
+    updateLabels();
+
+    noUiSlider.create(range, {
+      range: { min: r.range[0], max: r.range[1] },
+      start: r.range,
+    });
+
+    (range as any).noUiSlider.on("update", (values: [number, number]) => {
+      console.log(values);
+      r.curr = values;
+      updateLabels();
+      onUnitsNarrow(doFiltering());
+    });
   });
 }
 

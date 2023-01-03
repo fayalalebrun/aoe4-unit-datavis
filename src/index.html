@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>InfoVis</title>
+    <title>Age of Empires 4 Unit Data Visualization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
 	  <h1>Attack Bonus of Civilization Units</h1>
@@ -15,25 +16,51 @@
       <div class="dropdown" id="dropdown_container_y"></div>
       <div id="scatter"></div>
       <div class="dropdown" id="dropdown_container_x"></div>
-      <div id="filters">
-	  <span>
-	      Name
-	      <input type="search" id="search-input">
-	  </span>
-	  <span>
-	      Age
-	      <select name="Age" id="select-age">
-	      </select>
-	  </span>
-	  <span>
-	      Civilization
-	      <select name="Civilization" id="select-civ"> </select>
-	  </span>
-
-	  <span id="ranges">
-	  </span>
+      <div class="card">
+	  <header class="card-header">
+	      <p class="card-header-title">Filters</p>
+	      <a class="card-header-icon card-toggle">
+		  <i class="fa fa-angle-down"></i>
+	      </a>
+	  </header>
+	  <div class="card-content is-hidden">
+	      <div class="columns">
+		  <div class="column">
+		      <div class="field is-grouped">
+			  <label class="label">
+			      Name
+			  </label>
+			  <div class="control ml-2">
+			      <input type="search" id="search-input">
+			  </div>
+		      </div>
+		      <div class="field is-grouped">
+			  <label class="label">
+			      Age
+			  </label>
+			  <div class="control ml-2">
+			      <div class="select">
+				  <select name="Age" id="select-age" class="select"> </select>
+			      </div>
+			  </div>
+		      </div>
+		      <div class="field is-grouped">
+			  <label class="label">
+			      Civilization
+			  </label>
+			  <div class="control ml-2">
+			      <div class="select">
+				  <select name="Civilization" id="select-civ"> </select>
+			      </div>
+			  </div>
+		      </div>
+		  </div>
+		  <div class="column is-10" id="ranges">
+		  </div>
+	      </div>
+	  </div>
       </div>
-      <table id="table">
+      <table id="table" class="table">
 	  <thead>
 	      <tr id="headers">
 
