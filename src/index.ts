@@ -5,6 +5,7 @@ import { createScatter } from "./scatter";
 import { createHeatmap } from "./heatmap";
 import { createHeatmapDropdown } from "./heatmap";
 import { createFiltering, createTable } from "./table";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import "./index.scss";
 
@@ -77,6 +78,16 @@ async function main() {
   createFiltering(data, tableFn);
   const civs = createHeatmapDropdown(data);
   createHeatmap(data, civs[0], civs[0]);
+}
+
+// Used to create dropdown (E.g. table filters)
+let cardToggles = document.getElementsByClassName("card-toggle");
+for (let i = 0; i < cardToggles.length; i++) {
+  cardToggles[i].addEventListener("click", (e) => {
+    (
+      e.currentTarget as any
+    ).parentElement.parentElement.childNodes[3].classList.toggle("is-hidden");
+  });
 }
 
 main();

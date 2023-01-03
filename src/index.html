@@ -16,26 +16,49 @@
       <div class="dropdown" id="dropdown_container_y"></div>
       <div id="scatter"></div>
       <div class="dropdown" id="dropdown_container_x"></div>
-      <div id="filters">
-	  <span>
-	      Name
-	      <input type="search" id="search-input">
-	  </span>
-	  <span>
-	      Age
-	      <div class="select">
-		  <select name="Age" id="select-age" class="select"> </select>
+      <div class="card">
+	  <header class="card-header">
+	      <p class="card-header-title">Filters</p>
+	      <a class="card-header-icon card-toggle">
+		  <i class="fa fa-angle-down"></i>
+	      </a>
+	  </header>
+	  <div class="card-content is-hidden">
+	      <div class="columns">
+		  <div class="column">
+		      <div class="field is-grouped">
+			  <label class="label">
+			      Name
+			  </label>
+			  <div class="control ml-2">
+			      <input type="search" id="search-input">
+			  </div>
+		      </div>
+		      <div class="field is-grouped">
+			  <label class="label">
+			      Age
+			  </label>
+			  <div class="control ml-2">
+			      <div class="select">
+				  <select name="Age" id="select-age" class="select"> </select>
+			      </div>
+			  </div>
+		      </div>
+		      <div class="field is-grouped">
+			  <label class="label">
+			      Civilization
+			  </label>
+			  <div class="control ml-2">
+			      <div class="select">
+				  <select name="Civilization" id="select-civ"> </select>
+			      </div>
+			  </div>
+		      </div>
+		  </div>
+		  <div class="column is-10" id="ranges">
+		  </div>
 	      </div>
-	  </span>
-	  <span>
-	      Civilization
-	      <div class="select">
-		  <select name="Civilization" id="select-civ"> </select>
-	      </div>
-	  </span>
-
-	  <span id="ranges">
-	  </span>
+	  </div>
       </div>
       <table id="table" class="table">
 	  <thead>

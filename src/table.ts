@@ -123,13 +123,46 @@ export function createFiltering(
   ranges.forEach((r) => {
     let ranges = document.getElementById("ranges");
 
-    let span = document.createElement("span");
-    span.textContent = r.name;
-    ranges.appendChild(span);
+    let div = document.createElement("div");
+    ranges.appendChild(div);
+    div.className = "field is-grouped";
+
+    let label = document.createElement("label");
+    label.className = "label";
+    label.textContent = r.name;
+    div.appendChild(label);
+
+    let minControl = document.createElement("p");
+    minControl.className = "control";
+    div.appendChild(minControl);
+
+    let minLabel = document.createElement("a");
+    minLabel.className = "button is-static is-small mx-2";
+    minLabel.textContent = "0.0";
+    minControl.appendChild(minLabel);
+
+    let rangeControl = document.createElement("div");
+    div.appendChild(rangeControl);
+    rangeControl.className = "control is-expanded mx-2";
 
     let range = document.createElement("div");
     range.id = "#range-" + r.name.toLowerCase().replace(/\s+/g, "-");
-    span.appendChild(range);
+    rangeControl.appendChild(range);
+
+    let maxControl = document.createElement("p");
+    maxControl.className = "control";
+    div.appendChild(maxControl);
+
+    let maxLabel = document.createElement("a");
+    maxLabel.className = "button is-static is-small mx-2";
+    maxLabel.textContent = "0.0";
+    maxControl.appendChild(maxLabel);
+
+    function updateLabels() {
+      minLabel.textContent = r.curr[0].toString();
+      maxLabel.textContent = r.curr[1].toString();
+    }
+    updateLabels();
 
     noUiSlider.create(range, {
       range: { min: r.range[0], max: r.range[1] },
@@ -139,6 +172,7 @@ export function createFiltering(
     (range as any).noUiSlider.on("update", (values: [number, number]) => {
       console.log(values);
       r.curr = values;
+      updateLabels();
       onUnitsNarrow(doFiltering());
     });
   });
