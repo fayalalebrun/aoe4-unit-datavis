@@ -63,16 +63,24 @@ export interface Unit {
   movement: {
     speed: number;
   };
+  icon: string;
 }
 
 async function main() {
   let data: Unit[] = ((await d3.json("all.json")) as any).data;
 
   await createScatter(data);
-  createSlope(data, data[21]);
 
-  const tableFn = (units: Unit[]) =>
-    createTable(units, (unit) => createSlope(data, unit));
+  const updateUnitSelection = (unit: Unit) => {
+    createSlope(data, unit);
+    let name = document.getElementById("unit-name");
+    name.textContent = unit.name;
+    let image = document.getElementById("unit-image");
+    (image as any).src = unit.icon;
+  };
+  updateUnitSelection(data[21]);
+
+  const tableFn = (units: Unit[]) => createTable(units, updateUnitSelection);
   tableFn(data);
 
   createFiltering(data, tableFn);
