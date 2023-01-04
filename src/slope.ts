@@ -134,6 +134,7 @@ function createSlopeSub(
       .attr("x", padding)
       .attr("y", padding)
       .attr("dy", ".71em")
+      .attr("font-family", "Roboto")
       .text(u.title);
   });
 
