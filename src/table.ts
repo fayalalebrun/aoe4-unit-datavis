@@ -170,7 +170,6 @@ export function createFiltering(
     });
 
     (range as any).noUiSlider.on("update", (values: [number, number]) => {
-      console.log(values);
       r.curr = values;
       updateLabels();
       onUnitsNarrow(doFiltering());
@@ -178,29 +177,56 @@ export function createFiltering(
   });
 }
 
-// Creates/updates a table based on a given list of units. Takes a callback which
+/// Creates/updates a table based on a given list of units. Takes a callback which
 /// is called on a click event to a row
-export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
+export function createTable(
+  units: Unit[],
+  onUnitSelect: (unit: Unit) => void,
+  classScale: d3.ScaleOrdinal<string, string, never>
+) {
+  const pWrap = (field: any) => {
+    let p = document.createElement("p");
+    p.textContent = field;
+    return p;
+  };
+
+  // Creates visualization for classes with outline colored according to the class
+  // Can show multiple classes
+  const classes = (classes: string[]) => {
+    let div = document.createElement("div");
+    classes.forEach((c) => {
+      let button = document.createElement("button");
+      button.className = "button is-static is-outlined is-dark";
+      button.style.borderColor = classScale(c);
+      button.style.borderWidth = "0.2rem";
+
+      button.textContent = c;
+      div.appendChild(button);
+    });
+
+    return div;
+  };
+
   // Describe columns in the code itself
   const columns: [string, (u: Unit) => any][] = [
-    ["Name", (u: Unit) => u.name],
-    ["Class", (u: Unit) => u.displayClasses[0]],
-    ["Hitpoints", (u: Unit) => u.hitpoints],
-    ["Line of Sight", (u: Unit) => u.sight.line],
-    ["Speed", (u: Unit) => u.movement.speed],
-    ["Weapon type", (u: Unit) => u.weapons[0]?.type],
-    ["Weapon damage", (u: Unit) => u.weapons[0]?.damage],
+    ["Name", (u: Unit) => pWrap(u.name)],
+    ["Class", (u: Unit) => classes(u.displayClasses)],
+    ["Hitpoints", (u: Unit) => pWrap(u.hitpoints)],
+    ["Line of Sight", (u: Unit) => pWrap(u.sight.line)],
+    ["Speed", (u: Unit) => pWrap(u.movement.speed)],
+    ["Weapon type", (u: Unit) => pWrap(u.weapons[0]?.type)],
+    ["Weapon damage", (u: Unit) => pWrap(u.weapons[0]?.damage)],
     [
       "Melee armor",
-      (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
+      (u: Unit) => pWrap(u.armor.find((a) => a.type == "melee")?.value ?? 0),
     ],
     [
       "Ranged armor",
-      (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
+      (u: Unit) => pWrap(u.armor.find((a) => a.type == "ranged")?.value ?? 0),
     ],
-    ["Food", (u: Unit) => u.costs.food],
-    ["Gold", (u: Unit) => u.costs.gold],
-    ["Wood", (u: Unit) => u.costs.wood],
+    ["Food", (u: Unit) => pWrap(u.costs.food)],
+    ["Gold", (u: Unit) => pWrap(u.costs.gold)],
+    ["Wood", (u: Unit) => pWrap(u.costs.wood)],
   ];
 
   // Create headers.
@@ -223,5 +249,5 @@ export function createTable(units: Unit[], onUnitSelect: (unit: Unit) => void) {
     .selectAll("td")
     .data((unit: Unit) => columns.map((c) => c[1]).map((fn) => fn(unit)))
     .join("td")
-    .text((d) => d);
+    .html((d) => d.innerHTML);
 }

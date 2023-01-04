@@ -69,6 +69,12 @@ export interface Unit {
 async function main() {
   let data: Unit[] = ((await d3.json("all.json")) as any).data;
 
+  const classes = [...new Set(data.map((u) => u.displayClasses).flat())];
+  const colors = Array.from(Array(classes.length).keys()).map((i) =>
+    d3.interpolateSpectral(i / (classes.length - 1))
+  );
+  const classScale = d3.scaleOrdinal(classes, colors);
+
   await createScatter(data);
 
   const updateUnitSelection = (unit: Unit) => {
@@ -80,7 +86,8 @@ async function main() {
   };
   updateUnitSelection(data[21]);
 
-  const tableFn = (units: Unit[]) => createTable(units, updateUnitSelection);
+  const tableFn = (units: Unit[]) =>
+    createTable(units, updateUnitSelection, classScale);
   tableFn(data);
 
   createFiltering(data, tableFn);
