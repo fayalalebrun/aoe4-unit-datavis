@@ -184,10 +184,19 @@ export function createTable(
   onUnitSelect: (unit: Unit) => void,
   classScale: d3.ScaleOrdinal<string, string, never>
 ) {
+  // Wraps the element or elements passed and wraps each one in a <p> tag
   const pWrap = (field: any) => {
-    let p = document.createElement("p");
-    p.textContent = field;
-    return p;
+    let div = document.createElement("div");
+
+    let arr = [].concat(field);
+
+    arr.forEach((el) => {
+      let p = document.createElement("p");
+      p.textContent = el;
+      div.appendChild(p);
+    });
+
+    return div;
   };
 
   // Creates visualization for classes with outline colored according to the class
@@ -214,8 +223,8 @@ export function createTable(
     ["Hitpoints", (u: Unit) => pWrap(u.hitpoints)],
     ["Line of Sight", (u: Unit) => pWrap(u.sight.line)],
     ["Speed", (u: Unit) => pWrap(u.movement.speed)],
-    ["Weapon type", (u: Unit) => pWrap(u.weapons[0]?.type)],
-    ["Weapon damage", (u: Unit) => pWrap(u.weapons[0]?.damage)],
+    ["Weapon type", (u: Unit) => pWrap(u.weapons.map((w) => w.type))],
+    ["Weapon damage", (u: Unit) => pWrap(u.weapons.map((w) => w.damage))],
     [
       "Melee armor",
       (u: Unit) => pWrap(u.armor.find((a) => a.type == "melee")?.value ?? 0),
