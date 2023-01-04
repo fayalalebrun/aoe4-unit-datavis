@@ -1,18 +1,4 @@
-.dropdown {
-    width: 300px;
-}
-
-#dropdown_container_x {
-    margin-left: 285px;
-}
-
-#dropdown_container_y {
-    margin-left: 34px;
-}
-
-.selection {
-    width: 50%;
-}
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 
 #scatter circle {
     r: 3px;
@@ -24,11 +10,8 @@
 }
 
 #scatterplot_title {
-    width: 400px;
-    display: block;
     text-align: center;
-    margin-left: 34px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .gridline {
@@ -59,4 +42,25 @@
     font-size: .875rem;
     word-wrap: break-word;
     opacity: 0;
+}
+
+#dropdown-x, #dropdown-y {
+    display: block;
+    width: 100%;
+    .button {
+        width: 100%;
+        justify-content: left;
+    }
+    .icon {
+        right: 15px;
+        position: absolute;
+    }
+}
+
+#scatterplot {
+    width: 100%;
+}
+
+#scatterplot_menu {
+    width: 300px;
 }
