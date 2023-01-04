@@ -1,3 +1,5 @@
+@import "./theme.sass";
+
 .dropdown {
     width: 300px;
 }
@@ -79,8 +81,7 @@
     z-index: 1;
 }
 
-.table-container table tbody {
-    overflow-y: scroll !important;
-    pointer-events: auto;
-    width: auto;
+
+.tableFixHead tr:hover {
+    background-color: $white-ter;
 }
