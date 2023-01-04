@@ -24,12 +24,58 @@
 		    </div>
 		</div>
 	    </div>
-	    <div class="column">
-		<span id="scatterplot_title">Scatterplot Title</span>
-		<div class="dropdown" id="dropdown_container_y"></div>
-		<div id="scatter"></div>
-		<div class="dropdown" id="dropdown_container_x"></div>
+	    <div class="column is-1"> </div>
+	    <div id="scatterplot" class="tile is-ancestor column my-2">
+		<div class="tile is-vertical">
+			<p id="scatterplot_title" class="title">Scatterplot Title</p>
+			<div class="tile is-parent">
+				<div id="scatterplot_menu" class="tile is-parent is-5">
+					<article class="tile is-child box">
+						<p class="subtitle mb-4">Settings</p>
+						<p class="subtitle is-6 mb-3">X Axis</p>
+						<div class="dropdown" id="dropdown-x">
+							<div class="dropdown-trigger">
+								<button class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-x">
+									<p class="dropdown-text">X Axis</p>
+									<span class="icon is-small">
+										<i class="fas fa-angle-down" aria-hidden="true"></i>
+									</span>
+								</button>
+							</div>
+							<div class="dropdown-menu" id="dropdown-menu-x" role="menu">
+								<div class="dropdown-content" id="x_selection">
+								</div>
+							</div>
+						</div>
+						<p class="subtitle is-6 mb-3">Y Axis</p>
+						<div class="dropdown" id="dropdown-y">
+							<div class="dropdown-trigger">
+								<button class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-y">
+									<span class="dropdown-text">Y Axis</span>
+									<span class="icon is-small">
+										<i class="fas fa-angle-down" aria-hidden="true"></i>
+									</span>
+								</button>
+							</div>
+							<div class="dropdown-menu" id="dropdown-menu-y" role="menu">
+								<div class="dropdown-content" id="y_selection">
+								</div>
+							</div>
+						</div>
+						<input id="brush" type="checkbox">brush</input>
+						<input id="reset_button" type="button" value="reset"></input>
+					</article>
+				</div>
+				<div class="tile is-parent">
+					<article class="tile is-child">
+						<p class="subtitle">Scatterplot</p>
+						<div id="scatter"></div>
+					</article>
+				</div>
+			</div>
+		</div>
 	    </div>
+
 	</div>
 
 	<div class="columns">
@@ -98,4 +144,3 @@
 	<div id="rivalCivSelectButton" style="display:inline-block;"></div>
     </body>
 </html>
-
