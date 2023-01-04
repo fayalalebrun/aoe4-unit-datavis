@@ -10,11 +10,8 @@
 }
 
 #scatterplot_title {
-    width: 400px;
-    display: block;
     text-align: center;
-    margin-left: 34px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .gridline {
@@ -45,4 +42,25 @@
     font-size: .875rem;
     word-wrap: break-word;
     opacity: 0;
+}
+
+#dropdown-x, #dropdown-y {
+    display: block;
+    width: 100%;
+    .button {
+        width: 100%;
+        justify-content: left;
+    }
+    .icon {
+        right: 15px;
+        position: absolute;
+    }
+}
+
+#scatterplot {
+    width: 100%;
+}
+
+#scatterplot_menu {
+    width: 300px;
 }
