@@ -60,3 +60,26 @@
     word-wrap: break-word;
     opacity: 0;
 }
+
+
+.table-container {
+    height: 50vh;
+
+}
+
+.tableFixHead    {
+    scrollbar-width: thin;
+    overflow: auto;
+    height: 50vh;
+}
+.tableFixHead th {
+    position: sticky;
+    top: 0;
+    background: white;
+}
+
+.table-container table tbody {
+    overflow-y: scroll !important;
+    pointer-events: auto;
+    width: auto;
+}

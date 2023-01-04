@@ -6,68 +6,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-	  <h1>Attack Bonus of Civilization Units</h1>
-	  <p>The heatmap below shows the attack bonuses of a selected allied civilization against the units of a rival civilization.</p>
-	  <div id="alliedCivSelectButton"></div>
-	  <div id="unitHeatmap" style="display:inline-block;"></div>
-	  <div id="rivalCivSelectButton" style="display:inline-block;"></div>
-      <div id="slope"></div>
-      <span id="scatterplot_title">Scatterplot Title</span>
-      <div class="dropdown" id="dropdown_container_y"></div>
-      <div id="scatter"></div>
-      <div class="dropdown" id="dropdown_container_x"></div>
-      <div class="card">
-	  <header class="card-header">
-	      <p class="card-header-title">Filters</p>
-	      <a class="card-header-icon card-toggle">
-		  <i class="fa fa-angle-down"></i>
-	      </a>
-	  </header>
-	  <div class="card-content is-hidden">
-	      <div class="columns">
-		  <div class="column">
-		      <div class="field is-grouped">
-			  <label class="label">
-			      Name
-			  </label>
-			  <div class="control ml-2">
-			      <input type="search" id="search-input">
-			  </div>
-		      </div>
-		      <div class="field is-grouped">
-			  <label class="label">
-			      Age
-			  </label>
-			  <div class="control ml-2">
-			      <div class="select">
-				  <select name="Age" id="select-age" class="select"> </select>
+      <div class="columns">
+	  <div class="column">
+
+	      <div id="slope"></div>
+	      <div class="card">
+		  <header class="card-header">
+		      <p class="card-header-title">Filters</p>
+		      <a class="card-header-icon card-toggle">
+			  <i class="fa fa-angle-down"></i>
+		      </a>
+		  </header>
+		  <div class="card-content is-hidden">
+		      <div class="columns">
+			  <div class="column">
+			      <div class="field is-grouped">
+				  <label class="label">
+				      Name
+				  </label>
+				  <div class="control ml-2">
+				      <input type="search" id="search-input">
+				  </div>
+			      </div>
+			      <div class="field is-grouped">
+				  <label class="label">
+				      Age
+				  </label>
+				  <div class="control ml-2">
+				      <div class="select">
+					  <select name="Age" id="select-age" class="select"> </select>
+				      </div>
+				  </div>
+			      </div>
+			      <div class="field is-grouped">
+				  <label class="label">
+				      Civilization
+				  </label>
+				  <div class="control ml-2">
+				      <div class="select">
+					  <select name="Civilization" id="select-civ"> </select>
+				      </div>
+				  </div>
 			      </div>
 			  </div>
-		      </div>
-		      <div class="field is-grouped">
-			  <label class="label">
-			      Civilization
-			  </label>
-			  <div class="control ml-2">
-			      <div class="select">
-				  <select name="Civilization" id="select-civ"> </select>
-			      </div>
+			  <div class="column is-10" id="ranges">
 			  </div>
 		      </div>
-		  </div>
-		  <div class="column is-10" id="ranges">
 		  </div>
 	      </div>
+	      <div class="tableFixHead">
+		  <table id="table" class="table is-scrollable">
+		      <thead>
+			  <tr id="headers">
+
+			  </tr>
+		      </thead>
+		      <tbody id="table-body"> </tbody>
+		  </table>
+	      </div>
+	  </div>
+	  <div class="column">
+	      <span id="scatterplot_title">Scatterplot Title</span>
+	      <div class="dropdown" id="dropdown_container_y"></div>
+	      <div id="scatter"></div>
+	      <div class="dropdown" id="dropdown_container_x"></div>
 	  </div>
       </div>
-      <table id="table" class="table">
-	  <thead>
-	      <tr id="headers">
 
-	      </tr>
-	  </thead>
-	  <tbody id="table-body"> </tbody>
-      </table>
+      <h1>Attack Bonus of Civilization Units</h1>
+      <p>The heatmap below shows the attack bonuses of a selected allied civilization against the units of a rival civilization.</p>
+      <div id="alliedCivSelectButton"></div>
+      <div id="unitHeatmap" style="display:inline-block;"></div>
+      <div id="rivalCivSelectButton" style="display:inline-block;"></div>
   </body>
 </html>
 
