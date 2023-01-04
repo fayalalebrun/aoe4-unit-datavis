@@ -1,18 +1,4 @@
-.dropdown {
-    width: 300px;
-}
-
-#dropdown_container_x {
-    margin-left: 285px;
-}
-
-#dropdown_container_y {
-    margin-left: 34px;
-}
-
-.selection {
-    width: 50%;
-}
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 
 #scatter circle {
     r: 3px;

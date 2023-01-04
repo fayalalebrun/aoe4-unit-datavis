@@ -19,8 +19,8 @@ export async function createScatter(data: Unit[]) {
     "Ranged armor",
   ];
 
-  createDropDown(dropdown_list, "x_selection", "x");
-  createDropDown(dropdown_list.reverse(), "y_selection", "y");
+  createDropDown(dropdown_list, "x");
+  createDropDown(dropdown_list.reverse(), "y");
 
   d3.select("#x_selection").on("change", function () {
     updateScatterPlot(data);
@@ -74,21 +74,16 @@ function returnData(unit: Unit, selection_name: string, debug = false): number {
 /**
  * Make a dropdown list for a given axis.
  */
-function createDropDown(data: string[], name: string, axisName: string) {
-  var dropDown = d3
-    .select("#dropdown_container_" + axisName)
-    .append("select")
-    .attr("class", "selection")
-    .attr("id", name);
-
-  var options = dropDown
-    .selectAll("option")
-    .data(data)
-    .enter()
-    .append("option");
-  options.text(function (d) {
-    return d;
-  });
+function createDropDown(data: string[], axisName: string) {
+  var dropdown = d3.select("#"+ axisName + "_selection")
+  for(var d of data) {
+    dropdown
+    .append("a")
+    .attr("class", "dropdown-item")
+    .attr("href", "#")
+    .text(d);
+  }
+  d3.select("a").attr("class", "dropdown-item is-active");
 }
 
 /**
@@ -103,8 +98,8 @@ function updateScatterPlot(data: Unit[]) {
   d3.select("#scatter").selectAll("svg").remove();
 
   // Retrieve the selected axis option from the dropdown menus
-  const xSelectedOptionText = d3.select("#x_selection option:checked").text();
-  const ySelectedOptionText = d3.select("#y_selection option:checked").text();
+  const xSelectedOptionText = d3.select("#x_selection").select(".is-active").text();
+  const ySelectedOptionText = d3.select("#y_selection").select(".is-active").text();
 
   // Determine domains for axes based on selected options
   const selectedDataX = data.map((unit) =>
