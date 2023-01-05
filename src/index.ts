@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import * as d3 from "d3";
 import { createSlope } from "./slope";
 import { createHeatmap } from "./heatmap";
-import { createHeatmapDropdown } from "./heatmap";
+// import { createHeatmapDropdown } from "./heatmap";
 import { createFiltering, createTable } from "./table";
 
 export interface Unit {
@@ -71,8 +71,7 @@ async function main() {
   tableFn(data);
 
   createFiltering(data, tableFn);
-  const civs = createHeatmapDropdown(data);
-  createHeatmap(data, civs[0], civs[0]);
+  createHeatmap(data);
 }
 
 main();

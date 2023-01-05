@@ -5,11 +5,6 @@
     <title>InfoVis</title>
   </head>
   <body>
-	  <h1>Attack Bonus of Civilization Units</h1>
-	  <p>The heatmap below shows the attack bonuses of a selected allied civilization against the units of a rival civilization.</p>
-	  <div id="alliedCivSelectButton"></div>
-	  <div id="unitHeatmap" style="display:inline-block;"></div>
-	  <div id="rivalCivSelectButton" style="display:inline-block;"></div>
       <div id="slope"></div>
       <div id="filters">
 	  <span>
@@ -37,6 +32,25 @@
 	  </thead>
 	  <tbody id="table-body"> </tbody>
       </table>
+	  <h1>Attack Bonus of Civilization Units</h1>
+	  <p>The heatmap below shows the attack bonuses of a selected attacker civilization against the units of a defender civilization.</p>
+	  <div style='display:flex;'>
+		  <div style='margin-top: 300px; margin-left: 40px;'>
+			  Attacker Civilization:
+			  <div class="dropdown" id="dropdown_container_attacker" style='margin-bottom: 20px;'></div>
+			  Defender Civilization:
+			  <div class="dropdown" id="dropdown_container_defender" style='margin-bottom: 40px;'></div>
+			  <div style='margin-bottom: 20px;'>
+				  <input type="checkbox" id="check_attacker">
+				  Only show attacker units that <br> have an attack bonus
+			  </div>
+			  <div style='margin-bottom: 20px;'>
+				  <input type="checkbox" id="check_defender">
+				  Only show defender units that are <br> weak against an attack bonus
+			  </div>
+		  </div>
+		  <div id="unitHeatmap" style="display:inline-block;"></div>
+	  </div>
   </body>
 </html>
 
