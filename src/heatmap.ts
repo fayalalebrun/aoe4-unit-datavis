@@ -55,15 +55,24 @@ const civTitles: { [key: string]: string } = {
 /**
  * Make a dropdown list for a given axis.
  */
-function createDropDown(data: string[], name: string, axisName: string) {
-  var dropDown = d3
+function createDropDown(
+  data: string[],
+  name: string,
+  axisName: string,
+  units: Unit[],
+  allHeatmapData: HeatmapData[]
+) {
+  var dropdown = d3
     .select("#dropdown_container_" + axisName)
     .append("select")
     .attr("class", "selection")
     .text("adas")
-    .attr("id", name);
+    .attr("id", name)
+    .on("change", function () {
+      selectCivilization(units, allHeatmapData);
+    });
 
-  var options = dropDown
+  var options = dropdown
     .selectAll("option")
     .data(data)
     .enter()
@@ -250,18 +259,23 @@ function selectCivilization(data: Unit[], allHeatmapData: HeatmapData[]) {
 }
 
 export async function createHeatmap(data: Unit[]) {
-  createDropDown(Object.values(civTitles), "defender_selection", "defender");
-  createDropDown(Object.values(civTitles), "attacker_selection", "attacker");
-
   const allHeatmapData = getAllHeatmapData(data, Object.keys(civTitles));
+  createDropDown(
+    Object.values(civTitles),
+    "defender_selection",
+    "defender",
+    data,
+    allHeatmapData
+  );
+  createDropDown(
+    Object.values(civTitles),
+    "attacker_selection",
+    "attacker",
+    data,
+    allHeatmapData
+  );
 
   updateHeatmap(getSelectedHeatmapData(allHeatmapData));
-  d3.select("#defender_selection").on("change", function () {
-    selectCivilization(data, allHeatmapData);
-  });
-  d3.select("#attacker_selection").on("change", function () {
-    selectCivilization(data, allHeatmapData);
-  });
   d3.select("#check_attacker").on("change", function () {
     selectCivilization(data, allHeatmapData);
   });
@@ -281,7 +295,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
   } else {
     // Set the dimensions and margins of the graph
     var margin = { top: 170, right: 20, bottom: 20, left: 220 },
-      width = 900 - margin.left - margin.right,
+      width = 1000 - margin.left - margin.right,
       height = 800 - margin.top - margin.bottom;
   }
 
@@ -341,7 +355,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
       .append("text")
       .attr("class", "y label")
       .attr("text-anchor", "end")
-      .attr("x", -80)
+      .attr("x", -70)
       .attr("y", -170)
       .attr("dy", ".75em")
       .attr("transform", "rotate(-90)")
@@ -403,9 +417,9 @@ export function updateHeatmap(heatmapData: HeatmapData) {
         "<strong style = 'color:green'>" +
           d.attackerName +
           "</strong> has <br> <strong style = 'color:blue'>" +
-          d.defenderName +
-          "</strong> bonus attack against <br> <strong style = 'color:red'>" +
           d.modifierV +
+          "</strong> bonus attack against <br> <strong style = 'color:red'>" +
+          d.defenderName +
           "</strong>"
       )
       .style("left", event.pageX + 70 + "px")
