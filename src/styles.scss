@@ -1,4 +1,4 @@
-@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+@import "./theme.sass";
 
 #scatter circle {
     r: 3px;
@@ -63,4 +63,26 @@
 
 #scatterplot_menu {
     width: 300px;
+}
+
+.table-container {
+    height: 50vh;
+
+}
+
+.tableFixHead    {
+    scrollbar-width: thin;
+    overflow: auto;
+    height: 50vh;
+}
+.tableFixHead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+}
+
+
+.tableFixHead tr:hover {
+    background-color: $white-ter;
 }
