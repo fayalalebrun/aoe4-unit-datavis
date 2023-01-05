@@ -85,7 +85,7 @@ function createDropDown(
 function getUnitsLowestAge(names: string[], units: Unit[]) {
   return names.map((name) => {
     return units
-      .filter((unit) => unit.baseId == name)
+      .filter((unit) => prettifyUnitName(unit.baseId) == name)
       .reduce((acc, unit) => {
         if (acc.age < unit.age) {
           return acc;
@@ -96,6 +96,17 @@ function getUnitsLowestAge(names: string[], units: Unit[]) {
   });
 }
 
+function prettifyUnitName(name: string) {
+  if (name != "man-at-arms") {
+    const spaced = name.replace(/-/g, " ");
+    return spaced.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+      letter.toUpperCase()
+    );
+  } else {
+    return "Man-At-Arms";
+  }
+}
+
 function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
   const allHeatmapData = civTitles
     .map((attackerCiv) => {
@@ -103,7 +114,7 @@ function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
         item.civs.includes(attackerCiv)
       );
       let attackerUnitNames = [
-        ...new Set(attackerUnits.map((item) => item.baseId)),
+        ...new Set(attackerUnits.map((item) => prettifyUnitName(item.baseId))),
       ];
 
       // Create array of unique units for chosen attacker and defender civilizations based on lowest age
@@ -121,7 +132,9 @@ function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
         );
 
         let defenderUnitNames = [
-          ...new Set(defenderUnits.map((item) => item.baseId)),
+          ...new Set(
+            defenderUnits.map((item) => prettifyUnitName(item.baseId))
+          ),
         ];
 
         const uniqueDefenderUnits: Unit[] = getUnitsLowestAge(
@@ -148,8 +161,8 @@ function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
           let attackerDefenderPairs = uniqueDefenderUnits
             .map((defenderUnit) => {
               let obj: ModifierData = new ModifierData(
-                attackerUnit.baseId,
-                defenderUnit.baseId,
+                prettifyUnitName(attackerUnit.baseId),
+                prettifyUnitName(defenderUnit.baseId),
                 0
               );
               // Check whether defender unit is associated with any modifier for the attacker unit
@@ -330,7 +343,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
       .attr("class", "x label")
       .style("text-anchor", "start")
       .attr("x", 380)
-      .attr("y", -120)
+      .attr("y", -140)
       .text("Defender - " + civTitles[heatmapData.defenderCiv]);
   } else {
     svg
@@ -338,7 +351,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
       .attr("class", "x label")
       .style("text-anchor", "start")
       .attr("x", 280)
-      .attr("y", -120)
+      .attr("y", -140)
       .text("Defender - " + civTitles[heatmapData.defenderCiv]);
   }
 
