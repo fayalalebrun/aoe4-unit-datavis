@@ -21,7 +21,7 @@ export function createSlope(data: Unit[], unit: Unit) {
     },
     {
       yFn: (d: Unit) => {
-        return d.weapons[0].damage;
+        return d.weapons[0]?.damage ?? 0;
       },
       color: "cyan",
       title: "Weapon damage",
@@ -134,6 +134,7 @@ function createSlopeSub(
       .attr("x", padding)
       .attr("y", padding)
       .attr("dy", ".71em")
+      .attr("font-family", "Roboto")
       .text(u.title);
   });
 

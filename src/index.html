@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+    <head>
 	<meta charset="utf-8" />
 	<title>Age of Empires 4 Unit Data Visualization</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-
-<body>
-	<h1>Attack Bonus of Civilization Units</h1>
-	<p>The heatmap below shows the attack bonuses of a selected allied civilization against the units of a rival
-		civilization.</p>
-	<div id="alliedCivSelectButton"></div>
-	<div id="unitHeatmap" style="display:inline-block;"></div>
-	<div id="rivalCivSelectButton" style="display:inline-block;"></div>
-	<div id="slope"></div>
-	<hr/>
-	<div id="scatterplot" class="tile is-ancestor">
+    </head>
+    <body>
+	<div class="columns is-vcentered">
+	    <div class="column is-1"></div>
+	    <div class="column is-3">
+		<h1 class="title has-text-centered" > Age of Empires 4 Unit Data Visualization </h1>
+		<div class="card">
+		    <header class="card-header">
+			<figure class="image is-48x48">
+			    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" id="unit-image">
+			</figure>
+			<p class="card-header-title" id="unit-name">
+			    Unit name
+			</p>
+		    </header>
+		    <div class="card-content">
+			<div id="slope"></div>
+		    </div>
+		</div>
+	    </div>
+	    <div class="column is-1"> </div>
+	    <div id="scatterplot" class="tile is-ancestor column my-2">
 		<div class="tile is-vertical">
 			<p id="scatterplot_title" class="title">Scatterplot Title</p>
 			<div class="tile is-parent">
@@ -65,58 +74,73 @@
 				</div>
 			</div>
 		</div>
+	    </div>
+
 	</div>
-	<div class="card">
+
+	<div class="columns">
+	    <div class="column is-9">
+	    <div class="card">
 		<header class="card-header">
-			<p class="card-header-title">Filters</p>
-			<a class="card-header-icon card-toggle">
-				<i class="fa fa-angle-down"></i>
-			</a>
+		    <p class="card-header-title">Filters</p>
+		    <a class="card-header-icon card-toggle">
+			<i class="fa fa-angle-down"></i>
+		    </a>
 		</header>
 		<div class="card-content is-hidden">
-			<div class="columns">
-				<div class="column">
-					<div class="field is-grouped">
-						<label class="label">
-							Name
-						</label>
-						<div class="control ml-2">
-							<input type="search" id="search-input">
-						</div>
-					</div>
-					<div class="field is-grouped">
-						<label class="label">
-							Age
-						</label>
-						<div class="control ml-2">
-							<div class="select">
-								<select name="Age" id="select-age" class="select"> </select>
-							</div>
-						</div>
-					</div>
-					<div class="field is-grouped">
-						<label class="label">
-							Civilization
-						</label>
-						<div class="control ml-2">
-							<div class="select">
-								<select name="Civilization" id="select-civ"> </select>
-							</div>
-						</div>
-					</div>
+		    <div class="columns">
+			<div class="column">
+			    <div class="field is-grouped">
+				<label class="label">
+				    Name
+				</label>
+				<div class="control ml-2">
+				    <input type="search" id="search-input">
 				</div>
-				<div class="column is-10" id="ranges">
+			    </div>
+			    <div class="field is-grouped">
+				<label class="label">
+				    Age
+				</label>
+				<div class="control ml-2">
+				    <div class="select">
+					<select name="Age" id="select-age" class="select"> </select>
+				    </div>
 				</div>
+			    </div>
+			    <div class="field is-grouped">
+				<label class="label">
+				    Civilization
+				</label>
+				<div class="control ml-2">
+				    <div class="select">
+					<select name="Civilization" id="select-civ"> </select>
+				    </div>
+				</div>
+			    </div>
 			</div>
+			<div class="column is-10" id="ranges">
+			</div>
+		    </div>
 		</div>
-	</div>
-	<table id="table" class="table">
-		<thead>
+	    </div>
+	    <div class="tableFixHead">
+		<table id="table" class="table is-scrollable">
+		    <thead>
 			<tr id="headers">
-			</tr>
-		</thead>
-		<tbody id="table-body"> </tbody>
-	</table>
-</body>
 
+			</tr>
+		    </thead>
+		    <tbody id="table-body"> </tbody>
+		</table>
+	    </div>
+	    </div>
+	</div>
+
+	<h1>Attack Bonus of Civilization Units</h1>
+	<p>The heatmap below shows the attack bonuses of a selected allied civilization against the units of a rival civilization.</p>
+	<div id="alliedCivSelectButton"></div>
+	<div id="unitHeatmap" style="display:inline-block;"></div>
+	<div id="rivalCivSelectButton" style="display:inline-block;"></div>
+    </body>
 </html>

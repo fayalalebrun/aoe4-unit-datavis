@@ -3,21 +3,21 @@ import * as d3 from "d3";
 import { createSlope } from "./slope";
 import { Unit } from "./index";
 
-export function createHeatmapDropdown(data: Unit[]) {
-  // Full name of civilization for each abbreviation
-  var civTitles: { [key: string]: string } = {
-    en: "English",
-    ru: "Rus",
-    ab: "Abbasid Dynasty",
-    hr: "Holy Roman Empire",
-    fr: "French",
-    ch: "Chinese",
-    de: "Delhi Sultanate",
-    ma: "Malians",
-    mo: "Mongols",
-    ot: "Ottomans",
-  };
+// Full name of civilization for each abbreviation
+export const civTitles: { [key: string]: string } = {
+  en: "English",
+  ru: "Rus",
+  ab: "Abbasid Dynasty",
+  hr: "Holy Roman Empire",
+  fr: "French",
+  ch: "Chinese",
+  de: "Delhi Sultanate",
+  ma: "Malians",
+  mo: "Mongols",
+  ot: "Ottomans",
+};
 
+export function createHeatmapDropdown(data: Unit[]) {
   // Get list of all unique civs in dataset
   var civs = [...new Set(data.map((item) => item.civs).flat())];
 
