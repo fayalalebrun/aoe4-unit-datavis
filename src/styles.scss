@@ -9,11 +9,6 @@
     font-size: 13px;
 }
 
-#scatterplot_title {
-    text-align: center;
-    margin-bottom: 0px;
-}
-
 .gridline {
     stroke: black;
     shape-rendering: crispEdges;
@@ -55,6 +50,10 @@
         right: 15px;
         position: absolute;
     }
+}
+
+.dropdown-menu {
+    top: 64% !important;
 }
 
 #scatterplot {
