@@ -4,6 +4,7 @@ import Fuse from "fuse.js";
 import { Unit } from ".";
 import noUiSlider from "nouislider";
 import "nouislider/dist/nouislider.css";
+import { civTitles } from "./heatmap";
 
 /// Creates the controls for filtering the units in the table and other graphs
 export function createFiltering(
@@ -219,6 +220,7 @@ export function createTable(
   // Describe columns in the code itself
   const columns: [string, (u: Unit) => any][] = [
     ["Name", (u: Unit) => pWrap(u.name)],
+    ["Civilization", (u: Unit) => pWrap(civTitles[u.civs[0]])],
     ["Class", (u: Unit) => classes(u.displayClasses)],
     ["Hitpoints", (u: Unit) => pWrap(u.hitpoints)],
     ["Line of Sight", (u: Unit) => pWrap(u.sight.line)],
