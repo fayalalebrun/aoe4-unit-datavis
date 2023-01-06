@@ -39,7 +39,8 @@ class HeatmapData {
   }
 }
 
-const civTitles: { [key: string]: string } = {
+// Full name of civilization for each abbreviation
+export const civTitles: { [key: string]: string } = {
   en: "English",
   ru: "Rus",
   ab: "Abbasid Dynasty",
@@ -491,7 +492,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
     .on("mouseleave", mouseleave)
     .on("click", defenderHighlight);
 
-  // Set default highlight for first rival unit as initial highlight state
+  // Set default highlight for first defender unit as initial highlight state
   svg
     .selectAll()
     .data(heatmapData.modifierData, function (d) {

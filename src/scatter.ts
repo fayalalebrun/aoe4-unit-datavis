@@ -162,11 +162,6 @@ function updateScatterPlot(data: Unit[]) {
 
   var newY = y;
 
-  // Add graph title
-  d3.select("#scatterplot_title").text(
-    capitalize(ySelectedOptionText) + " vs " + capitalize(xSelectedOptionText)
-  );
-
   // Add graph labels
   svg
     .append("text") // Label for the x axis
