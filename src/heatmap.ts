@@ -526,7 +526,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
     .attr("height", y.bandwidth())
     .attr("y", (d) => y(d.attackerName))
     .attr("x", (d) => x(heatmapData.attackerCiv[0]))
-      .attr("stroke", "#fcc201")
-      .attr("stroke-width", 1.8)
+    .attr("stroke", "#fcc201")
+    .attr("stroke-width", 1.8)
     .style("fill", "none");
 }

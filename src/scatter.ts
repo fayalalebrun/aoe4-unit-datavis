@@ -62,13 +62,13 @@ function createDropDown(variables: string[], axisName: string, data: Unit[]) {
   var dropdown = d3.select("#dropdown-" + axisName);
 
   dropdown.selectAll("a").remove();
-  
+
   dropdown.on("click", function () {
     let active = d3.select(this).classed("is-active");
     d3.selectAll(".dropdown").classed("is-active", false);
     d3.select(this).classed("is-active", !active);
 
-    d3.selectAll(".dropdown").each(function() {
+    d3.selectAll(".dropdown").each(function () {
       if (d3.select(this).classed("is-active")) {
         d3.select(this).select(".fas").attr("class", "fas fa-angle-up");
       } else {
