@@ -53,9 +53,7 @@ export const civTitles: { [key: string]: string } = {
   ot: "Ottomans",
 };
 
-/**
- * Make a dropdown list for a given axis.
- */
+// Make a dropdown list for a given axis.
 function createDropDown(
   data: string[],
   name: string,
@@ -70,7 +68,7 @@ function createDropDown(
     .text("adas")
     .attr("id", name)
     .on("change", function () {
-      selectCivilization(units, allHeatmapData);
+      updateCivHeatmapData(units, allHeatmapData);
     });
 
   var options = dropdown
@@ -83,6 +81,7 @@ function createDropDown(
   });
 }
 
+// Get lowest aged unit for each unit
 function getUnitsLowestAge(names: string[], units: Unit[]) {
   return names.map((name) => {
     return units
@@ -97,6 +96,7 @@ function getUnitsLowestAge(names: string[], units: Unit[]) {
   });
 }
 
+// Capitalize and remove hyphens for unit name
 function prettifyUnitName(name: string) {
   if (name != "man-at-arms") {
     const spaced = name.replace(/-/g, " ");
@@ -108,22 +108,25 @@ function prettifyUnitName(name: string) {
   }
 }
 
+// Get a list of all heatmap data for each civilization pair
 function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
   const allHeatmapData = civTitles
     .map((attackerCiv) => {
       let attackerUnits = data.filter((item) =>
         item.civs.includes(attackerCiv)
       );
+      // Create array of unique and prettified unit names
       let attackerUnitNames = [
         ...new Set(attackerUnits.map((item) => prettifyUnitName(item.baseId))),
       ];
 
-      // Create array of unique units for chosen attacker and defender civilizations based on lowest age
+      // Create array of unique units for attacker civilizations based on lowest age
       const uniqueAttackerUnits: Unit[] = getUnitsLowestAge(
         attackerUnitNames,
         attackerUnits
       );
 
+      // Second civ in heatmapdata civ pair
       var defenderHeatmapData = civTitles.map((defenderCiv) => {
         let modifierData: any[] = [];
         // Keep track of max attack bonus in data for color scaling
@@ -138,6 +141,7 @@ function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
           ),
         ];
 
+        // Create array of unique units for defender civilization based on lowest age
         const uniqueDefenderUnits: Unit[] = getUnitsLowestAge(
           defenderUnitNames,
           defenderUnits
@@ -185,8 +189,10 @@ function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
           // Concatenate list of pairs as heatmap data
           modifierData = modifierData.concat(attackerDefenderPairs);
         });
+        // Sort unitnames in alphabetical order
         attackerUnitNames.sort().reverse();
         defenderUnitNames.sort();
+        // return heatmapdata for a civ pair
         return new HeatmapData(
           attackerCiv,
           defenderCiv,
@@ -203,6 +209,7 @@ function getAllHeatmapData(data: Unit[], civTitles: string[]): HeatmapData[] {
   return allHeatmapData;
 }
 
+// Filters heatmap based on whether zero rows/columns were chosen to be shown for an attacker or defender
 function filterHeatmap(
   heatmapData: HeatmapData,
   checkAttacker: boolean,
@@ -213,14 +220,18 @@ function filterHeatmap(
   let unitNamesTemp: string[] = [];
   let modifierDataTemp = heatmapData.modifierData;
   let updatedHeatmapData = structuredClone(heatmapData);
+  // If user has chosen to filter out zero entries for attacker, filter entries
   if (checkAttacker) {
     heatmapData.attackerUnitNames.forEach((name: string) => {
+      // Create list of all modifier values for a unit
       let unitNameValues = modifierDataTemp
         .filter((modData) => modData.attackerName == name)
         .map((modData) => modData.modifierV);
+      // If list only contains zero don't include unit
       if (!unitNameValues.every((v: number) => v == 0)) {
         attackerUnitNamesTemp.push(name);
       } else {
+        // Filter unit out from heatmap
         modifierDataTemp = modifierDataTemp.filter(
           (modData) => modData.attackerName != name
         );
@@ -229,14 +240,18 @@ function filterHeatmap(
     updatedHeatmapData.attackerUnitNames = attackerUnitNamesTemp;
     updatedHeatmapData.modifierData = modifierDataTemp;
   }
+  // If user has chosen to filter out zero entries for defender, filter entries
   if (checkDefender) {
     heatmapData.defenderUnitNames.forEach((name: string) => {
+      // Create list of all modifier values for a unit
       let unitNameValues = modifierDataTemp
         .filter((modData) => modData.defenderName == name)
         .map((modData) => modData.modifierV);
+      // If list only contains zero don't include unit
       if (!unitNameValues.every((v: number) => v == 0)) {
         defenderUnitNamesTemp.push(name);
       } else {
+        // Filter unit out from heatmap
         modifierDataTemp = modifierDataTemp.filter(
           (modData) => modData.defenderName != name
         );
@@ -248,12 +263,13 @@ function filterHeatmap(
   return updatedHeatmapData;
 }
 
-// Retrieve the selected axis option from the dropdown menus
+// Retrieve the selected dropdown option from the dropdown menus
 function getSelectedValue(name: string) {
   const title = d3.select("#" + name + " option:checked").text();
   return Object.keys(civTitles).find((key) => civTitles[key] === title);
 }
 
+// Retrieve the selected heatmap data from complete list based on selected dropdown options
 function getSelectedHeatmapData(allHeatmapData: HeatmapData[]) {
   const heatmapData = allHeatmapData.find(
     (item) =>
@@ -263,7 +279,8 @@ function getSelectedHeatmapData(allHeatmapData: HeatmapData[]) {
   return heatmapData;
 }
 
-function selectCivilization(data: Unit[], allHeatmapData: HeatmapData[]) {
+// Updates heatmap based on heatmap data from selected civilizations in dropdown menu
+function updateCivHeatmapData(data: Unit[], allHeatmapData: HeatmapData[]) {
   const filteredHeatmap = filterHeatmap(
     getSelectedHeatmapData(allHeatmapData),
     d3.select("#check_attacker").property("checked"),
@@ -272,6 +289,7 @@ function selectCivilization(data: Unit[], allHeatmapData: HeatmapData[]) {
   updateHeatmap(filteredHeatmap);
 }
 
+// Creates initial heatmap
 export async function createHeatmap(data: Unit[]) {
   const allHeatmapData = getAllHeatmapData(data, Object.keys(civTitles));
   createDropDown(
@@ -291,18 +309,19 @@ export async function createHeatmap(data: Unit[]) {
 
   updateHeatmap(getSelectedHeatmapData(allHeatmapData));
   d3.select("#check_attacker").on("change", function () {
-    selectCivilization(data, allHeatmapData);
+    updateCivHeatmapData(data, allHeatmapData);
   });
   d3.select("#check_defender").on("change", function () {
-    selectCivilization(data, allHeatmapData);
+    updateCivHeatmapData(data, allHeatmapData);
   });
 }
 
+// Updates displayed heatmap from heatmapdata based on selected parameters
 export function updateHeatmap(heatmapData: HeatmapData) {
   d3.select("#unitHeatmap").selectAll("svg").remove();
 
   if (d3.select("#check_attacker").property("checked")) {
-    // Set the dimensions and margins of the graph
+    // Set the dimensions and margins of the graph if filtering zero entries
     var margin = { top: 170, right: 20, bottom: 20, left: 220 },
       width = 1200 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
@@ -339,6 +358,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
     .attr("transform", "rotate(-65)");
 
   if (d3.select("#check_attacker").property("checked")) {
+    // Set the axis label if filtering zero entries
     svg
       .append("text")
       .attr("class", "x label")
@@ -347,6 +367,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
       .attr("y", -140)
       .text("Defender - " + civTitles[heatmapData.defenderCiv]);
   } else {
+    // Set the axis label
     svg
       .append("text")
       .attr("class", "x label")
