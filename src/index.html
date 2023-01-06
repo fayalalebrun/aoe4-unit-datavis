@@ -82,61 +82,61 @@
 
 	</div>
 
-	<div class="columns">
-	    <div class="column is-9">
-	    <div class="card my-2">
-		<header class="card-header has-background-primary">
-		    <p class="card-header-title has-text-link">Filters</p>
-		    <a class="card-header-icon card-toggle">
-			<i class="fa fa-angle-down"></i>
-		    </a>
-		</header>
-		<div class="card-content is-hidden">
-		    <div class="columns">
-			<div class="column">
-			    <div class="field is-grouped">
-				<label class="label">
-				    Name
-				</label>
-				<div class="control ml-2">
-				    <input type="search" id="search-input">
+	<div class="is-flex is-flex-direction-row is-justify-content-center">
+	    <div class="tableAndFilters">
+		<div class="card my-2">
+		    <header class="card-header has-background-primary">
+			<p class="card-header-title has-text-link">Filters</p>
+			<a class="card-header-icon card-toggle">
+			    <i class="fa fa-angle-down"></i>
+			</a>
+		    </header>
+		    <div class="card-content is-hidden">
+			<div class="columns">
+			    <div class="column">
+				<div class="field is-grouped">
+				    <label class="label">
+					Name
+				    </label>
+				    <div class="control ml-2">
+					<input type="search" id="search-input">
+				    </div>
 				</div>
-			    </div>
-			    <div class="field is-grouped">
-				<label class="label">
-				    Age
-				</label>
-				<div class="control ml-2">
-				    <div class="select">
-					<select name="Age" id="select-age" class="select"> </select>
+				<div class="field is-grouped">
+				    <label class="label">
+					Age
+				    </label>
+				    <div class="control ml-2">
+					<div class="select">
+					    <select name="Age" id="select-age" class="select"> </select>
+					</div>
+				    </div>
+				</div>
+				<div class="field is-grouped">
+				    <label class="label">
+					Civilization
+				    </label>
+				    <div class="control ml-2">
+					<div class="select">
+					    <select name="Civilization" id="select-civ"> </select>
+					</div>
 				    </div>
 				</div>
 			    </div>
-			    <div class="field is-grouped">
-				<label class="label">
-				    Civilization
-				</label>
-				<div class="control ml-2">
-				    <div class="select">
-					<select name="Civilization" id="select-civ"> </select>
-				    </div>
-				</div>
+			    <div class="column is-10" id="ranges">
 			    </div>
-			</div>
-			<div class="column is-10" id="ranges">
 			</div>
 		    </div>
 		</div>
-	    </div>
-	    <div class="tableFixHead">
-		<table id="table" class="table is-scrollable">
-		    <thead class="has-background-primary">
-			<tr id="headers">
-			</tr>
-		    </thead>
-		    <tbody id="table-body"> </tbody>
-		</table>
-	    </div>
+		<div class="tableFixHead">
+		    <table id="table" class="table is-scrollable">
+			<thead class="has-background-primary">
+			    <tr id="headers">
+			    </tr>
+			</thead>
+			<tbody id="table-body"> </tbody>
+		    </table>
+		</div>
 	    </div>
 	</div>
 

@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { createSlope } from "./slope";
 import { createScatter } from "./scatter";
 import { createHeatmap } from "./heatmap";
-import { createFiltering, createTable } from "./table";
+import { createFiltering, createTable, createTableHeaders } from "./table";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import "./index.scss";
@@ -89,6 +89,7 @@ async function main() {
     createScatter(units);
   };
   tableFn(data);
+  createTableHeaders(data, tableFn);
 
   createFiltering(data, tableFn);
   createHeatmap(data);

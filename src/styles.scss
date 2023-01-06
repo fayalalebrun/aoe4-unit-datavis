@@ -77,13 +77,17 @@
 .tableFixHead th {
     position: sticky;
     top: 0;
-    background: white;
+    background: $primary;
     z-index: 1;
 }
 
 
 .tableFixHead tr:hover {
     background-color: $white-ter;
+}
+
+.tableAndFilters {
+    max-width: 95rem;
 }
 
 
