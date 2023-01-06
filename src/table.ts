@@ -178,6 +178,131 @@ export function createFiltering(
   });
 }
 
+// Wraps the element or elements passed and wraps each one in a <p> tag
+const pWrap = (field: any) => {
+  let div = document.createElement("div");
+
+  let arr = [].concat(field);
+
+  arr.forEach((el) => {
+    let p = document.createElement("p");
+    p.textContent = el;
+    div.appendChild(p);
+  });
+
+  return div;
+};
+
+// Creates visualization for classes with outline colored according to the class
+// Can show multiple classes
+const classes = (classes: string[]) => {
+  let div = document.createElement("div");
+  classes.forEach((c) => {
+    let button = document.createElement("button");
+    button.className = "button is-static is-outlined is-dark";
+    button.style.borderColor = classScaleGlobal(c);
+    button.style.borderWidth = "0.2rem";
+
+    button.textContent = c;
+    div.appendChild(button);
+  });
+
+  return div;
+};
+
+type ColumnData = [string, (u: Unit) => any, (u: any) => HTMLDivElement];
+
+// Describe columns in the code itself
+const columns: ColumnData[] = [
+  ["Name", (u: Unit) => u.name, pWrap],
+  ["Civilization", (u: Unit) => u.civs[0], (u: any) => pWrap(civTitles[u])],
+  ["Class", (u: Unit) => u.displayClasses, classes],
+  ["Hitpoints", (u: Unit) => u.hitpoints, pWrap],
+  ["Line of Sight", (u: Unit) => u.sight.line, pWrap],
+  ["Speed", (u: Unit) => u.movement.speed, pWrap],
+  ["Weapon Type", (u: Unit) => u.weapons.map((w) => w.type), pWrap],
+  ["Attack", (u: Unit) => u.weapons.map((w) => w.damage), pWrap],
+  [
+    "Melee Armor",
+    (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
+    pWrap,
+  ],
+  [
+    "Ranged Armor",
+    (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
+    pWrap,
+  ],
+  ["Food", (u: Unit) => u.costs.food, pWrap],
+  ["Gold", (u: Unit) => u.costs.gold, pWrap],
+  ["Wood", (u: Unit) => u.costs.wood, pWrap],
+];
+
+export function createTableHeaders(
+  units: Unit[],
+  tableFn: (units: Unit[]) => void
+) {
+  interface Header {
+    selected: "asc" | "desc" | null;
+    data: ColumnData;
+  }
+  function createHeader(data: ColumnData): Header {
+    return { selected: null, data };
+  }
+
+  let headers = columns.map(createHeader);
+  const nullifyOthers = (header: Header) => {
+    headers.map((h) => {
+      if (h !== header) {
+        h.selected = null;
+      }
+    });
+    if (header.selected === null) {
+      header.selected = "asc";
+    }
+  };
+
+  function drawHeaders() {
+    // Create headers.
+    d3.select("#headers")
+      .selectAll("th")
+      .data(headers)
+      .join("th")
+      .on("click", (_, d) => {
+        console.log(d.selected);
+        nullifyOthers(d);
+        tableFn(
+          units.sort((a, b) => {
+            const f = d.selected === "asc" ? a : b;
+            const s = d.selected === "asc" ? b : a;
+
+            return d.data[1](f)
+              .toString()
+              .localeCompare(d.data[1](s).toString(), undefined, {
+                numeric: true,
+              });
+          })
+        );
+        d.selected = d.selected === "asc" ? "desc" : "asc";
+        drawHeaders();
+      })
+      .html((d) => {
+        let div = document.createElement("div");
+        div.classList.add("has-background-primary");
+        div.textContent = d.data[0];
+        if (d.selected === "asc") {
+          div.textContent += " ▲";
+        } else if (d.selected === "desc") {
+          div.textContent += " ▼";
+        }
+        return div.outerHTML;
+      });
+  }
+  drawHeaders();
+}
+
+// TODO: Remove this global
+let classScaleGlobal: d3.ScaleOrdinal<string, string, never> | null;
+
 /// Creates/updates a table based on a given list of units. Takes a callback which
 /// is called on a click event to a row
 export async function createTable(
@@ -185,81 +310,7 @@ export async function createTable(
   onUnitSelect: (unit: Unit) => void,
   classScale: d3.ScaleOrdinal<string, string, never>
 ) {
-  // Wraps the element or elements passed and wraps each one in a <p> tag
-  const pWrap = (field: any) => {
-    let div = document.createElement("div");
-
-    let arr = [].concat(field);
-
-    arr.forEach((el) => {
-      let p = document.createElement("p");
-      p.textContent = el;
-      div.appendChild(p);
-    });
-
-    return div;
-  };
-
-  // Creates visualization for classes with outline colored according to the class
-  // Can show multiple classes
-  const classes = (classes: string[]) => {
-    let div = document.createElement("div");
-    classes.forEach((c) => {
-      let button = document.createElement("button");
-      button.className = "button is-static is-outlined is-dark";
-      button.style.borderColor = classScale(c);
-      button.style.borderWidth = "0.2rem";
-
-      button.textContent = c;
-      div.appendChild(button);
-    });
-
-    return div;
-  };
-
-  // Describe columns in the code itself
-  const columns: [string, (u: Unit) => any, (u: any) => HTMLDivElement][] = [
-    ["Name", (u: Unit) => u.name, pWrap],
-    ["Civilization", (u: Unit) => u.civs[0], (u: any) => pWrap(civTitles[u])],
-    ["Class", (u: Unit) => u.displayClasses, classes],
-    ["Hitpoints", (u: Unit) => u.hitpoints, pWrap],
-    ["Line of Sight", (u: Unit) => u.sight.line, pWrap],
-    ["Speed", (u: Unit) => u.movement.speed, pWrap],
-    ["Weapon Type", (u: Unit) => u.weapons.map((w) => w.type), pWrap],
-    ["Attack", (u: Unit) => u.weapons.map((w) => w.damage), pWrap],
-    [
-      "Melee Armor",
-      (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
-      pWrap,
-    ],
-    [
-      "Ranged Armor",
-      (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
-      pWrap,
-    ],
-    ["Food", (u: Unit) => u.costs.food, pWrap],
-    ["Gold", (u: Unit) => u.costs.gold, pWrap],
-    ["Wood", (u: Unit) => u.costs.wood, pWrap],
-  ];
-
-  // Create headers.
-  d3.select("#headers")
-    .selectAll("th")
-    .data(columns)
-    .join("th")
-    .on("click", (_, d) => {
-      createTable(
-        units.sort((a, b) =>
-          d[1](a)
-            .toString()
-            .localeCompare(d[1](b).toString(), undefined, { numeric: true })
-        ),
-        onUnitSelect,
-        classScale
-      );
-    })
-    .text((d) => d[0]);
-
+  classScaleGlobal = classScale;
   // Add a row for each unit.
   const rows = d3
     .select("#table-body")
