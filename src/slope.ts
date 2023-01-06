@@ -24,17 +24,17 @@ export function createSlope(data: Unit[], unit: Unit) {
         return d.weapons[0]?.damage ?? 0;
       },
       color: "cyan",
-      title: "Weapon damage",
+      title: "Attack",
     },
     {
       yFn: (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
       color: "blue",
-      title: "Melee armor",
+      title: "Melee Armor",
     },
     {
       yFn: (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
       color: "purple",
-      title: "Ranged armor",
+      title: "Ranged Armor",
     },
   ];
   createSlopeSub(unit, group, subgraphs);
@@ -134,7 +134,6 @@ function createSlopeSub(
       .attr("x", padding)
       .attr("y", padding)
       .attr("dy", ".71em")
-      .attr("font-family", "Roboto")
       .text(u.title);
   });
 

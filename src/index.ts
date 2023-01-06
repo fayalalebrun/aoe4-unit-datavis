@@ -74,8 +74,6 @@ async function main() {
   );
   const classScale = d3.scaleOrdinal(classes, colors);
 
-  await createScatter(data);
-
   const updateUnitSelection = (unit: Unit) => {
     createSlope(data, unit);
     let name = document.getElementById("unit-name");
@@ -85,8 +83,11 @@ async function main() {
   };
   updateUnitSelection(data[21]);
 
-  const tableFn = (units: Unit[]) =>
+  const tableFn = async (units: Unit[]) => {
     createTable(units, updateUnitSelection, classScale);
+
+    createScatter(units);
+  };
   tableFn(data);
 
   createFiltering(data, tableFn);

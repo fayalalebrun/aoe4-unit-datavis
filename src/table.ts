@@ -48,13 +48,13 @@ export function createFiltering(
     createRange("Hitpoints", (u) => u.hitpoints),
     createRange("Line of Sight", (u) => u.sight.line),
     createRange("Speed", (u) => u.movement.speed),
-    createRange("Weapon Damage", (u) => u.weapons[0]?.damage ?? 0),
+    createRange("Attack", (u) => u.weapons[0]?.damage ?? 0),
     createRange(
-      "Melee armor",
+      "Melee Armor",
       (u) => u.armor.find((a) => a.type == "melee")?.value ?? 0
     ),
     createRange(
-      "Ranged armor",
+      "Ranged Armor",
       (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0
     ),
     createRange("Food", (u) => u.costs.food),
@@ -180,7 +180,7 @@ export function createFiltering(
 
 /// Creates/updates a table based on a given list of units. Takes a callback which
 /// is called on a click event to a row
-export function createTable(
+export async function createTable(
   units: Unit[],
   onUnitSelect: (unit: Unit) => void,
   classScale: d3.ScaleOrdinal<string, string, never>
@@ -225,14 +225,14 @@ export function createTable(
     ["Hitpoints", (u: Unit) => pWrap(u.hitpoints)],
     ["Line of Sight", (u: Unit) => pWrap(u.sight.line)],
     ["Speed", (u: Unit) => pWrap(u.movement.speed)],
-    ["Weapon type", (u: Unit) => pWrap(u.weapons.map((w) => w.type))],
-    ["Weapon damage", (u: Unit) => pWrap(u.weapons.map((w) => w.damage))],
+    ["Weapon Type", (u: Unit) => pWrap(u.weapons.map((w) => w.type))],
+    ["Attack", (u: Unit) => pWrap(u.weapons.map((w) => w.damage))],
     [
-      "Melee armor",
+      "Melee Armor",
       (u: Unit) => pWrap(u.armor.find((a) => a.type == "melee")?.value ?? 0),
     ],
     [
-      "Ranged armor",
+      "Ranged Armor",
       (u: Unit) => pWrap(u.armor.find((a) => a.type == "ranged")?.value ?? 0),
     ],
     ["Food", (u: Unit) => pWrap(u.costs.food)],
