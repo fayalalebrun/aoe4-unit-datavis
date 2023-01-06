@@ -180,7 +180,7 @@ export function createFiltering(
 
 /// Creates/updates a table based on a given list of units. Takes a callback which
 /// is called on a click event to a row
-export function createTable(
+export async function createTable(
   units: Unit[],
   onUnitSelect: (unit: Unit) => void,
   classScale: d3.ScaleOrdinal<string, string, never>
