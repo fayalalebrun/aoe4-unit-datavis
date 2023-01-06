@@ -144,7 +144,7 @@ export function createFiltering(
 
     let rangeControl = document.createElement("div");
     div.appendChild(rangeControl);
-    rangeControl.className = "control is-expanded mx-2";
+    rangeControl.className = "control sliderDiv mx-2";
 
     let range = document.createElement("div");
     range.id = "#range-" + r.name.toLowerCase().replace(/\s+/g, "-");
