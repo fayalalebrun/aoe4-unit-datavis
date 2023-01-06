@@ -104,7 +104,7 @@ function prettifyUnitName(name: string) {
       letter.toUpperCase()
     );
   } else {
-    return "Man-At-Arms";
+    return "Man-at-Arms";
   }
 }
 
