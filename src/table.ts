@@ -112,7 +112,11 @@ export function createFiltering(
   // Civilization filter
   d3.select("#select-civ")
     .on("change", (event) => {
-      filters.civ = searchByValue(civTitles, event.target.value);
+      if (event.target.value == "") {
+        filters.civ = ""
+      } else {
+        filters.civ = searchByValue(civTitles, event.target.value);
+      }
       onUnitsNarrow(doFiltering());
     })
     .selectAll("option")
