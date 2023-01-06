@@ -1,80 +1,84 @@
 <!DOCTYPE html>
 <html>
-	<div id="banner">
+	<div class="has-background-primary has-text-link" id="banner">
 		<div id="banner-content">
 			Age of Empires 4 Unit Data
 		</div>
 	</div>
-	<div id="main-content">
-	</div>
-    <body>
+	<body>
 	<div class="columns is-vcentered">
 	    <div class="column is-1"></div>
 	    <div class="column is-3">
+		<div id="main-content">
+			Welcome! Our goal is to improve gameplay in Age of Empires 4 by learning more about its units. Use the table below to search for or filter for specific units. The slope plot displays the evolution for a selected unit in the table.
+			To see the relationships between unit attributes access the scatterplot. In case you would like to view attack bonuses between civilizations see the heatmap at the end.
+		</div>
 		<div class="card">
 		    <header class="card-header has-background-primary">
 			<figure class="image is-48x48">
 			    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Unit icon" id="unit-image">
 			</figure>
-			<p class="card-header-title" id="unit-name">
+			<p class="card-header-title has-text-link" id="unit-name">
 			    Unit name
 			</p>
 		    </header>
-		    <div class="card-content has-background-link has-text-primary">
+			<div class="card-content">
 			<div id="slope"></div>
 			<p> Click a unit on the table to see how its stats evolve across ages.</p>
 		    </div>
 		</div>
 	    </div>
 	    <div class="column is-1"> </div>
-	    <div id="scatterplot" class="tile is-ancestor column my-2">
-		<div class="tile is-vertical">
-			<div class="tile is-parent">
-				<div id="scatterplot_menu" class="tile is-parent is-5">
-					<article class="tile is-child box">
-						<p style="margin-bottom: 40px;">Scatterplot of all unit attributes. Use the settings and table below to filter.</p>
-						<p class="subtitle is-6 mb-3">X Axis</p>
-						<div class="dropdown" id="dropdown-x">
-							<div class="dropdown-trigger">
-								<button onblur="javascript:document.querySelector('#dropdown-x').classList.remove('is-active'); document.querySelector('#dropdown-x .fas').className = 'fas fa-angle-down';" class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-x">
-									<p class="dropdown-text">X Axis</p>
-									<span class="icon is-small">
-										<i class="fas fa-angle-down" aria-hidden="true"></i>
-									</span>
-								</button>
-							</div>
-							<div class="dropdown-menu" id="dropdown-menu-x" role="menu">
-								<div class="dropdown-content" id="x_selection">
+		<div style="margin-top: 60px">
+			<div id="scatterplot" class="tile is-ancestor column my-2">
+				<div class="tile is-vertical">
+					<div class="tile is-parent">
+						<div id="scatterplot_menu" class="tile is-parent is-5">
+							<article class="tile is-child box">
+								<p style="margin-bottom: 40px;">Scatterplot of all unit attributes. Use the settings and table below to filter.</p>
+								<p class="subtitle is-6 mb-3">X Axis</p>
+								<div class="dropdown" id="dropdown-x">
+									<div class="dropdown-trigger">
+										<button onblur="javascript:document.querySelector('#dropdown-x').classList.remove('is-active'); document.querySelector('#dropdown-x .fas').className = 'fas fa-angle-down';" class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-x">
+											<p class="dropdown-text">X Axis</p>
+											<span class="icon is-small">
+												<i class="fas fa-angle-down" aria-hidden="true"></i>
+											</span>
+										</button>
+									</div>
+									<div class="dropdown-menu" id="dropdown-menu-x" role="menu">
+										<div class="dropdown-content" id="x_selection">
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-						<p class="subtitle is-6 mb-3">Y Axis</p>
-						<div class="dropdown" id="dropdown-y">
-							<div class="dropdown-trigger">
-								<button onblur="javascript:document.querySelector('#dropdown-y').classList.remove('is-active'); document.querySelector('#dropdown-y .fas').className = 'fas fa-angle-down';" class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-y">
-									<p class="dropdown-text">Y Axis</p>
-									<span class="icon is-small">
-										<i class="fas fa-angle-down" aria-hidden="true"></i>
-									</span>
-								</button>
-							</div>
-							<div class="dropdown-menu" id="dropdown-menu-y" role="menu">
-								<div class="dropdown-content" id="y_selection">
+								<p class="subtitle is-6 mb-3">Y Axis</p>
+								<div class="dropdown" id="dropdown-y">
+									<div class="dropdown-trigger">
+										<button onblur="javascript:document.querySelector('#dropdown-y').classList.remove('is-active'); document.querySelector('#dropdown-y .fas').className = 'fas fa-angle-down';" class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-y">
+											<p class="dropdown-text">Y Axis</p>
+											<span class="icon is-small">
+												<i class="fas fa-angle-down" aria-hidden="true"></i>
+											</span>
+										</button>
+									</div>
+									<div class="dropdown-menu" id="dropdown-menu-y" role="menu">
+										<div class="dropdown-content" id="y_selection">
+										</div>
+									</div>
 								</div>
-							</div>
+								<input id="brush" type="checkbox" style="margin-right: 4px">Brush</input>
+								<input id="reset_button" type="button" value="Reset" style="margin-left: 6px"></input>
+							</article>
 						</div>
-						<input id="brush" type="checkbox" style="margin-right: 4px">brush</input>
-						<input id="reset_button" type="button" value="reset" style="margin-left: 6px"></input>
-					</article>
+						<div class="tile is-parent">
+							<article class="tile is-child">
+								<div id="scatter"></div>
+							</article>
+						</div>
+					</div>
 				</div>
-				<div class="tile is-parent">
-					<article class="tile is-child">
-						<div id="scatter"></div>
-					</article>
-				</div>
-			</div>
+	    	</div>
 		</div>
-	    </div>
 
 	</div>
 
@@ -82,7 +86,7 @@
 	    <div class="column is-9">
 	    <div class="card my-2">
 		<header class="card-header has-background-primary">
-		    <p class="card-header-title">Filters</p>
+		    <p class="card-header-title has-text-link">Filters</p>
 		    <a class="card-header-icon card-toggle">
 			<i class="fa fa-angle-down"></i>
 		    </a>
@@ -145,10 +149,10 @@
 		<div style='margin-top: 50px; margin-left: 40px;'>
 			<article class="tile is-child box">
 				<div>
-					<p class="subtitle is-6 mb-3">Attacker Civilization:</p>
-					<div class="dropdown" id="dropdown_container_attacker" style='margin-bottom: 30px;'></div>
 					<p class="subtitle is-6 mb-3" >Defender Civilization:</p>
-					<div class="dropdown" id="dropdown_container_defender" style='margin-bottom: 50px;'></div>
+					<div class="dropdown" id="dropdown_container_defender" style='margin-bottom: 30px;'></div>
+					<p class="subtitle is-6 mb-3">Attacker Civilization:</p>
+					<div class="dropdown" id="dropdown_container_attacker" style='margin-bottom: 50px;'></div>
 					<div style='margin-bottom: 20px;'>
 						<input type="checkbox" id="check_attacker">
 						Only show attacker units that <br> have an attack bonus

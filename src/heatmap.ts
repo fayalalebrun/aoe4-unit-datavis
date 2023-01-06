@@ -412,7 +412,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
     .scalePow<string>()
     .exponent(0.4)
     .domain([0, heatmapData.maxBonus])
-    .range(["white", "#074b70"]);
+    .range(["white", "#0693e3"]);
 
   // Create a tooltip
   var tooltip = d3
@@ -483,8 +483,8 @@ export function updateHeatmap(heatmapData: HeatmapData) {
       .attr("y", (d) => y(d.attackerName))
       .attr("x", x(selectedModifierData.defenderName))
       .attr("opacity", 1)
-      .attr("stroke", "orange")
-      .attr("stroke-width", 1.5)
+      .attr("stroke", "#fcc201")
+      .attr("stroke-width", 1.8)
       .style("fill", "none");
   };
 
@@ -526,7 +526,7 @@ export function updateHeatmap(heatmapData: HeatmapData) {
     .attr("height", y.bandwidth())
     .attr("y", (d) => y(d.attackerName))
     .attr("x", (d) => x(heatmapData.attackerCiv[0]))
-    .attr("stroke", "orange")
-    .attr("stroke-width", 1.5)
+      .attr("stroke", "#fcc201")
+      .attr("stroke-width", 1.8)
     .style("fill", "none");
 }
