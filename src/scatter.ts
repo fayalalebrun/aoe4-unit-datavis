@@ -10,14 +10,14 @@ export async function createScatter(data: Unit[]) {
   // Clickable options in the dropdown list
   const dropdown_list = [
     "Hitpoints",
-    "Line of sight",
+    "Line of Sight",
     "Speed",
-    "Weapon damage",
+    "Attack",
     "Food",
     "Gold",
     "Wood",
-    "Melee armor",
-    "Ranged armor",
+    "Melee Armor",
+    "Ranged Armor",
   ];
 
   createDropDown(dropdown_list, "x", data);
@@ -36,15 +36,15 @@ function returnData(unit: Unit, selection_name: string, debug = false): number {
   switch (selection_name) {
     case "Hitpoints":
       return unit.hitpoints;
-    case "Line of sight":
+    case "Line of Sight":
       return unit.sight.line;
     case "Speed":
       return unit.movement.speed;
-    case "Weapon damage":
+    case "Attack":
       return unit.weapons[0]?.damage ?? 0;
-    case "Melee armor":
+    case "Melee Armor":
       return unit.armor.find((a) => a.type == "melee")?.value ?? 0;
-    case "Ranged armor":
+    case "Ranged Armor":
       return unit.armor.find((a) => a.type == "ranged")?.value ?? 0;
     case "Food":
       return unit.costs.food;
@@ -163,14 +163,9 @@ async function updateScatterPlot(data: Unit[]) {
 
   var newY = y;
 
-  // Add graph title
-  d3.select("#scatterplot_title").text(
-    capitalize(xSelectedOptionText) + " vs " + capitalize(ySelectedOptionText)
-  );
-
   // Add graph labels
   svg
-    .append("text") // Label for the X axis
+    .append("text") // Label for the x axis
     .attr("x", 200)
     .attr("y", 415)
     .style("text-anchor", "middle")

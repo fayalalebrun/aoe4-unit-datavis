@@ -85,3 +85,25 @@
 .tableFixHead tr:hover {
     background-color: $white-ter;
 }
+
+
+#banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #4169e1;
+    width: 100%;
+}
+#banner-content {
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    color: #FFD700;
+    text-align: center;
+    font-size: 50px;
+}
+#main-content {
+    padding-top: 120px;
+    margin-left: 40px;;
+    width: 500px;
+}

@@ -48,13 +48,13 @@ export function createFiltering(
     createRange("Hitpoints", (u) => u.hitpoints),
     createRange("Line of Sight", (u) => u.sight.line),
     createRange("Speed", (u) => u.movement.speed),
-    createRange("Weapon Damage", (u) => u.weapons[0]?.damage ?? 0),
+    createRange("Attack", (u) => u.weapons[0]?.damage ?? 0),
     createRange(
-      "Melee armor",
+      "Melee Armor",
       (u) => u.armor.find((a) => a.type == "melee")?.value ?? 0
     ),
     createRange(
-      "Ranged armor",
+      "Ranged Armor",
       (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0
     ),
     createRange("Food", (u) => u.costs.food),
@@ -225,15 +225,15 @@ export async function createTable(
     ["Hitpoints", (u: Unit) => u.hitpoints, pWrap],
     ["Line of Sight", (u: Unit) => u.sight.line, pWrap],
     ["Speed", (u: Unit) => u.movement.speed, pWrap],
-    ["Weapon type", (u: Unit) => u.weapons.map((w) => w.type), pWrap],
-    ["Weapon damage", (u: Unit) => u.weapons.map((w) => w.damage), pWrap],
+    ["Weapon Type", (u: Unit) => u.weapons.map((w) => w.type), pWrap],
+    ["Attack", (u: Unit) => u.weapons.map((w) => w.damage), pWrap],
     [
-      "Melee armor",
+      "Melee Armor",
       (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
       pWrap,
     ],
     [
-      "Ranged armor",
+      "Ranged Armor",
       (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
       pWrap,
     ],

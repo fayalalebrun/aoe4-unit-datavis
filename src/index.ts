@@ -3,7 +3,6 @@ import * as d3 from "d3";
 import { createSlope } from "./slope";
 import { createScatter } from "./scatter";
 import { createHeatmap } from "./heatmap";
-import { createHeatmapDropdown } from "./heatmap";
 import { createFiltering, createTable } from "./table";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -92,8 +91,7 @@ async function main() {
   tableFn(data);
 
   createFiltering(data, tableFn);
-  const civs = createHeatmapDropdown(data);
-  createHeatmap(data, civs[0], civs[0]);
+  createHeatmap(data);
 }
 
 // Used to create dropdown (E.g. table filters)

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head>
-	<meta charset="utf-8" />
-	<title>Age of Empires 4 Unit Data Visualization</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
+	<div id="banner">
+		<div id="banner-content">
+			Age of Empires 4 Unit Data
+		</div>
+	</div>
+	<div id="main-content">
+	</div>
     <body>
 	<div class="columns is-vcentered">
 	    <div class="column is-1"></div>
 	    <div class="column is-3">
-		<h1 class="title has-text-centered" > Age of Empires 4 Unit Data Visualization </h1>
 		<div class="card">
 		    <header class="card-header has-background-primary">
 			<figure class="image is-48x48">
@@ -31,7 +32,7 @@
 			<div class="tile is-parent">
 				<div id="scatterplot_menu" class="tile is-parent is-5">
 					<article class="tile is-child box">
-						<p class="subtitle mb-4">Settings</p>
+						<p style="margin-bottom: 40px;">Scatterplot of all unit attributes. Use the settings and table below to filter.</p>
 						<p class="subtitle is-6 mb-3">X Axis</p>
 						<div class="dropdown" id="dropdown-x">
 							<div class="dropdown-trigger">
@@ -62,13 +63,12 @@
 								</div>
 							</div>
 						</div>
-						<input id="brush" type="checkbox">brush</input>
-						<input id="reset_button" type="button" value="reset"></input>
+						<input id="brush" type="checkbox" style="margin-right: 4px">brush</input>
+						<input id="reset_button" type="button" value="reset" style="margin-left: 6px"></input>
 					</article>
 				</div>
 				<div class="tile is-parent">
 					<article class="tile is-child">
-						<p id="scatterplot_title" class="subtitle">Scatterplot Title</p>
 						<div id="scatter"></div>
 					</article>
 				</div>
@@ -128,7 +128,6 @@
 		<table id="table" class="table is-scrollable">
 		    <thead class="has-background-primary">
 			<tr id="headers">
-
 			</tr>
 		    </thead>
 		    <tbody id="table-body"> </tbody>
@@ -137,10 +136,31 @@
 	    </div>
 	</div>
 
-	<h1>Attack Bonus of Civilization Units</h1>
-	<p>The heatmap below shows the attack bonuses of a selected allied civilization against the units of a rival civilization.</p>
-	<div id="alliedCivSelectButton"></div>
-	<div id="unitHeatmap" style="display:inline-block;"></div>
-	<div id="rivalCivSelectButton" style="display:inline-block;"></div>
+	<hr class="solid">
+	<div style='margin-left: 40px; text-align: center;'>
+		<h4 class="title">Attack Bonus of Civilization Units</h4>
+		<p>The heatmap below shows the attack bonuses of a selected attacker civilization against the units of a defender civilization.</p>
+	</div>
+	<div style='display:flex;'>
+		<div style='margin-top: 50px; margin-left: 40px;'>
+			<article class="tile is-child box">
+				<div>
+					<p class="subtitle is-6 mb-3">Attacker Civilization:</p>
+					<div class="dropdown" id="dropdown_container_attacker" style='margin-bottom: 30px;'></div>
+					<p class="subtitle is-6 mb-3" >Defender Civilization:</p>
+					<div class="dropdown" id="dropdown_container_defender" style='margin-bottom: 50px;'></div>
+					<div style='margin-bottom: 20px;'>
+						<input type="checkbox" id="check_attacker">
+						Only show attacker units that <br> have an attack bonus
+					</div>
+					<div style='margin-bottom: 20px;'>
+						<input type="checkbox" id="check_defender">
+						Only show defender units that <br> are weak against an attack bonus
+					</div>
+				</div>
+			</article>
+		</div>
+		<div id="unitHeatmap" style='margin-top: 30px;'></div>
+	</div>
     </body>
 </html>
