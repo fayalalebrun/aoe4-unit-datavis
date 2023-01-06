@@ -9,13 +9,14 @@ import "./styles.scss";
 export async function createScatter(data: Unit[]) {
   // Clickable options in the dropdown list
   const dropdown_list = [
+    "Hitpoints",
+    "Line of sight",
+    "Speed",
     "Weapon damage",
-    "Weapon max range",
-    "Movement speed",
-    "Gold costs",
-    "Attack bonus max value",
-    "Attack duration",
-    "Meele armor",
+    "Food",
+    "Gold",
+    "Wood",
+    "Melee armor",
     "Ranged armor",
   ];
 
@@ -33,33 +34,24 @@ export async function createScatter(data: Unit[]) {
  */
 function returnData(unit: Unit, selection_name: string, debug = false): number {
   switch (selection_name) {
-    case "Weapon damage":
-      return unit.weapons.map((wp) => wp.damage)[0];
-    case "Weapon max range":
-      return unit.weapons.map((wp) => wp.range.max)[0];
-    case "Movement speed":
+    case "Hitpoints":
+      return unit.hitpoints;
+    case "Line of sight":
+      return unit.sight.line;
+    case "Speed":
       return unit.movement.speed;
-    case "Gold costs":
-      return unit.costs.gold;
-    case "Attack bonus max value": {
-      if (debug)
-        console.log(
-          "WEAPONS: " + JSON.stringify(unit.weapons.map((wp) => wp.modifiers))
-        );
-
-      return unit.weapons.map((wp) => {
-        const modifierValues = wp.modifiers.map((m) =>
-          m.value === null ? 0 : m.value
-        );
-        return modifierValues[0];
-      })[0];
-    }
-    case "Attack duration":
-      return unit.weapons.map((wp) => wp.durations.attack)[0];
-    case "Meele armor":
+    case "Weapon damage":
+      return unit.weapons[0]?.damage ?? 0;
+    case "Melee armor":
       return unit.armor.find((a) => a.type == "melee")?.value ?? 0;
     case "Ranged armor":
       return unit.armor.find((a) => a.type == "ranged")?.value ?? 0;
+    case "Food":
+      return unit.costs.food;
+    case "Gold":
+      return unit.costs.gold;
+    case "Wood":
+      return unit.costs.wood;
   }
 }
 
@@ -68,6 +60,8 @@ function returnData(unit: Unit, selection_name: string, debug = false): number {
  */
 function createDropDown(variables: string[], axisName: string, data: Unit[]) {
   var dropdown = d3.select("#dropdown-" + axisName);
+
+  dropdown.selectAll("a").remove();
   
   dropdown.on("click", function () {
     let active = d3.select(this).classed("is-active");
