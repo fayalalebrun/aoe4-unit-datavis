@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { sort, text } from "d3";
+import { sort } from "d3";
 import Fuse from "fuse.js";
 import { Unit } from ".";
 import noUiSlider from "nouislider";
@@ -218,34 +218,47 @@ export async function createTable(
   };
 
   // Describe columns in the code itself
-  const columns: [string, (u: Unit) => any][] = [
-    ["Name", (u: Unit) => pWrap(u.name)],
-    ["Civilization", (u: Unit) => pWrap(civTitles[u.civs[0]])],
-    ["Class", (u: Unit) => classes(u.displayClasses)],
-    ["Hitpoints", (u: Unit) => pWrap(u.hitpoints)],
-    ["Line of Sight", (u: Unit) => pWrap(u.sight.line)],
-    ["Speed", (u: Unit) => pWrap(u.movement.speed)],
-    ["Weapon Type", (u: Unit) => pWrap(u.weapons.map((w) => w.type))],
-    ["Attack", (u: Unit) => pWrap(u.weapons.map((w) => w.damage))],
+  const columns: [string, (u: Unit) => any, (u: any) => HTMLDivElement][] = [
+    ["Name", (u: Unit) => u.name, pWrap],
+    ["Civilization", (u: Unit) => u.civs[0], (u: any) => pWrap(civTitles[u])],
+    ["Class", (u: Unit) => u.displayClasses, classes],
+    ["Hitpoints", (u: Unit) => u.hitpoints, pWrap],
+    ["Line of Sight", (u: Unit) => u.sight.line, pWrap],
+    ["Speed", (u: Unit) => u.movement.speed, pWrap],
+    ["Weapon Type", (u: Unit) => u.weapons.map((w) => w.type), pWrap],
+    ["Attack", (u: Unit) => u.weapons.map((w) => w.damage), pWrap],
     [
       "Melee Armor",
-      (u: Unit) => pWrap(u.armor.find((a) => a.type == "melee")?.value ?? 0),
+      (u: Unit) => u.armor.find((a) => a.type == "melee")?.value ?? 0,
+      pWrap,
     ],
     [
       "Ranged Armor",
-      (u: Unit) => pWrap(u.armor.find((a) => a.type == "ranged")?.value ?? 0),
+      (u: Unit) => u.armor.find((a) => a.type == "ranged")?.value ?? 0,
+      pWrap,
     ],
-    ["Food", (u: Unit) => pWrap(u.costs.food)],
-    ["Gold", (u: Unit) => pWrap(u.costs.gold)],
-    ["Wood", (u: Unit) => pWrap(u.costs.wood)],
+    ["Food", (u: Unit) => u.costs.food, pWrap],
+    ["Gold", (u: Unit) => u.costs.gold, pWrap],
+    ["Wood", (u: Unit) => u.costs.wood, pWrap],
   ];
 
   // Create headers.
   d3.select("#headers")
     .selectAll("th")
-    .data(columns.map((c) => c[0]))
+    .data(columns)
     .join("th")
-    .text((d) => d);
+    .on("click", (_, d) => {
+      createTable(
+        units.sort((a, b) =>
+          d[1](a)
+            .toString()
+            .localeCompare(d[1](b).toString(), undefined, { numeric: true })
+        ),
+        onUnitSelect,
+        classScale
+      );
+    })
+    .text((d) => d[0]);
 
   // Add a row for each unit.
   const rows = d3
@@ -258,7 +271,7 @@ export async function createTable(
   // Add all attributes to each row.
   rows
     .selectAll("td")
-    .data((unit: Unit) => columns.map((c) => c[1]).map((fn) => fn(unit)))
+    .data((unit: Unit) => columns.map((c) => c[2](c[1](unit))))
     .join("td")
     .html((d) => d.innerHTML);
 }
