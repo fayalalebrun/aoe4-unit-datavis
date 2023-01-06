@@ -68,16 +68,19 @@ function returnData(unit: Unit, selection_name: string, debug = false): number {
  */
 function createDropDown(variables: string[], axisName: string, data: Unit[]) {
   var dropdown = d3.select("#dropdown-" + axisName);
-
-  dropdown.selectAll("a").remove();
-
+  
   dropdown.on("click", function () {
-    d3.select(this).classed("is-active", !d3.select(this).classed("is-active"));
-    if (d3.select(this).classed("is-active")) {
-      d3.select(this).select(".fas").attr("class", "fas fa-angle-up");
-    } else {
-      d3.select(this).select(".fas").attr("class", "fas fa-angle-down");
-    }
+    let active = d3.select(this).classed("is-active");
+    d3.selectAll(".dropdown").classed("is-active", false);
+    d3.select(this).classed("is-active", !active);
+
+    d3.selectAll(".dropdown").each(function() {
+      if (d3.select(this).classed("is-active")) {
+        d3.select(this).select(".fas").attr("class", "fas fa-angle-up");
+      } else {
+        d3.select(this).select(".fas").attr("class", "fas fa-angle-down");
+      }
+    });
   });
   var dropdown_select = dropdown.select("#" + axisName + "_selection");
   for (const [i, v] of variables.entries()) {
@@ -85,7 +88,7 @@ function createDropDown(variables: string[], axisName: string, data: Unit[]) {
       .append("a")
       .attr("class", "dropdown-item")
       .text(v)
-      .on("click", function () {
+      .on("mousedown", function () {
         if (d3.select(this).classed("is-active")) return;
         dropdown.selectAll(".dropdown-item").classed("is-active", false);
         d3.select(this).classed("is-active", true);

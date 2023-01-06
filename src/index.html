@@ -34,7 +34,7 @@
 						<p class="subtitle is-6 mb-3">X Axis</p>
 						<div class="dropdown" id="dropdown-x">
 							<div class="dropdown-trigger">
-								<button class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-x">
+								<button onblur="javascript:document.querySelector('#dropdown-x').classList.remove('is-active'); document.querySelector('#dropdown-x .fas').className = 'fas fa-angle-down';" class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-x">
 									<p class="dropdown-text">X Axis</p>
 									<span class="icon is-small">
 										<i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -49,7 +49,7 @@
 						<p class="subtitle is-6 mb-3">Y Axis</p>
 						<div class="dropdown" id="dropdown-y">
 							<div class="dropdown-trigger">
-								<button class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-y">
+								<button onblur="javascript:document.querySelector('#dropdown-y').classList.remove('is-active'); document.querySelector('#dropdown-y .fas').className = 'fas fa-angle-down';" class="button mb-4" aria-haspopup="true" aria-controls="dropdown-menu-y">
 									<p class="dropdown-text">Y Axis</p>
 									<span class="icon is-small">
 										<i class="fas fa-angle-down" aria-hidden="true"></i>
