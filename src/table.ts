@@ -112,13 +112,13 @@ export function createFiltering(
   // Civilization filter
   d3.select("#select-civ")
     .on("change", (event) => {
-      filters.civ = event.target.value;
+      filters.civ = searchByValue(civTitles, event.target.value);
       onUnitsNarrow(doFiltering());
     })
     .selectAll("option")
     .data(["", ...sort(new Set(d3.map(units, (d) => d.civs).flat())).values()])
     .join("option")
-    .text((d) => d);
+    .text((d) => civTitles[d]);
 
   // Add the inputs to each previously created span.
   ranges.forEach((r) => {
@@ -177,6 +177,19 @@ export function createFiltering(
     });
   });
 }
+
+// Find key in object by value
+const searchByValue = (
+  obj: { [x: string]: string | string[] },
+  val: string
+) => {
+  for (let key in obj) {
+    if (obj[key].indexOf(val) !== -1) {
+      return key;
+    }
+  }
+  return null;
+};
 
 // Wraps the element or elements passed and wraps each one in a <p> tag
 const pWrap = (field: any) => {
